@@ -7,21 +7,6 @@ class Feld(SampleBase):
     def __init__(self, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
 
-    # SetPixel
-    # canvas.SetPixel(x,y,r,g,b)
-
-    # DrawLine
-    # graphics.DrawLine(canvas, x0, y0, x1, y1, graphics.Color(255, 0, 0))
-
-    # DrawCircle
-    # graphics.DrawCircle(canvas, cx, cy, r, graphics.Color(255, 0, 0))
-
-    # DrawText
-    # graphics.DrawText(canvas, font, 2, 10, blue, "Text")
-
-    # Fill
-    # self.matrix.Fill(c, 0, 0)
-
     def run(self):
         canvas = self.matrix.CreateFrameCanvas()
 
@@ -99,3 +84,20 @@ if __name__ == "__main__":
 
 # font
 # connessione server
+
+#####################
+
+# SetPixel
+# canvas.SetPixel(x,y,r,g,b)
+
+# DrawLine
+# graphics.DrawLine(canvas, x0, y0, x1, y1, graphics.Color(255, 0, 0))
+
+# DrawCircle
+# graphics.DrawCircle(canvas, cx, cy, r, graphics.Color(255, 0, 0))
+
+# DrawText
+# graphics.DrawText(canvas, font, 2, 10, blue, "Text")
+
+# Fill
+# self.matrix.Fill(c, 0, 0)
