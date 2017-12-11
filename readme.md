@@ -23,12 +23,12 @@
 		# Select: SSH
 		# Choose: YES / OK / Finish
 
-7) Connect RaspberryPi Wifi Automatically 
-		
+7) Connect RaspberryPi Wifi Automatically
+
 		sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
-		
+
 		# content:
-		
+
 		country=GB
 		ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 		update_config=1
@@ -39,7 +39,7 @@
         	psk="<password>"
 		}
 
-8) run: 
+8) run:
 
 	sudo halt
 
@@ -63,11 +63,11 @@ alternative:
 4) connect SSH to RaspberryPi with the command
 
 		ssh pi@<raspberrypi_IP>
-		# example: 
+		# example:
 		#	ssh pi@192.168.1.52
 
 alternative:
-		
+
 		ssh -i ~/.ssh/id_rsa.pub pi@<raspberrypi_IP>
 		# your id_rsa.pub needs to be in ~/.ssh/authorized_keys on RaspberryPi
 
@@ -76,22 +76,27 @@ alternative:
 1) On RaspberryPi download github repositorie
 
 		cd && git clone https://github.com/AmedeoSpagnolo/feldman_led_matrix.git
+		cd feldman_led_matrix
 
 9) Setup
 
-		sudo python ~/feldman_led_matrix/lib/setup.py
+		cd ~/feldman_led_matrix
+		wget https://github.com/adafruit/rpi-rgb-led-matrix/archive/master.zip
+		unzip master.zip
+		rm master.zip
+		cd rpi-rgb-led-matrix-master/
+		make
 
 ## Wiring
 
 Follow the [instuction](http://google.com) for wiring the led Screen
 
-## Run 
+## Run
 
 ### Simple Feldman loader
 
 		cd ~/feldman_led_matrix/scripts/ && sudo python feldman_loader.py --led-rows=16 --led-chain=2
-		
+
 ### Server Felman
 
 		boris server --led-chain=4 --led-rows=16
-
