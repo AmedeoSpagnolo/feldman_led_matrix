@@ -69,7 +69,7 @@ Follow the [instuction](http://google.com) for wiring the led Screen
 
 ### Simple Feldman loader
 
-		boris loader --led-chain=4 --led-rows=16
+		cd ~/feldman_led_matrix/scripts/ && sudo python feldman_loader.py --led-rows=16 --led-chain=2
 		
 ### Server Felman
 
