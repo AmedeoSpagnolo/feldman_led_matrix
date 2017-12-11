@@ -80,12 +80,18 @@ alternative:
 
 9) Setup
 
+		# install python library rgbmatrix
 		cd ~/feldman_led_matrix
-		wget https://github.com/adafruit/rpi-rgb-led-matrix/archive/master.zip
+		wget https://github.com/hzeller/rpi-rgb-led-matrix/archive/master.zip
 		unzip master.zip
 		rm master.zip
 		cd rpi-rgb-led-matrix-master/
 		make
+		cd /bindings/python
+		make
+
+		# Pillow
+		python -m pip install Pillow
 
 ## Wiring
 
