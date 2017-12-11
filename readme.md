@@ -23,7 +23,27 @@
 		# Select: SSH
 		# Choose: YES / OK / Finish
 
-7) Disconnect monitor, keyboard and mouse
+7) Connect RaspberryPi Wifi Automatically 
+		
+		sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+		
+		# content:
+		
+		country=GB
+		ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+		update_config=1
+
+		network={
+        	ssid="<SSID_name>"
+        	scan_ssid=1
+        	psk="<password>"
+		}
+
+8) run: 
+
+	sudo halt
+
+9) Disconnect monitor, keyboard and mouse
 
 ## Connect to RasberryPi
 
@@ -46,20 +66,20 @@ alternative:
 		# example: 
 		#	ssh pi@192.168.1.52
 
-alternative)
+alternative:
 		
 		ssh -i ~/.ssh/id_rsa.pub pi@<raspberrypi_IP>
 		# your id_rsa.pub needs to be in ~/.ssh/authorized_keys on RaspberryPi
 
 ## Setup
 
-1) Download github repositorie
+1) On RaspberryPi download github repositorie
 
-		git clone git@github.com:AmedeoSpagnolo/feldman_led_matrix.git
+		cd && git clone https://github.com/AmedeoSpagnolo/feldman_led_matrix.git
 
 9) Setup
 
-		./feldman_led_matrix/setup
+		sudo python ~/feldman_led_matrix/lib/setup.py
 
 ## Wiring
 
