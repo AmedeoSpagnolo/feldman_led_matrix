@@ -1,6 +1,6 @@
 run local server
 
-    python local_server.py
+    python local_server_random_name.py
 
 api request
 
