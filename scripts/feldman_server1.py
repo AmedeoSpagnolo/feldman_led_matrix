@@ -12,10 +12,10 @@ prev_word = ""
 class Feld(SampleBase):
     def __init__(self, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
-        blacklist   = json.load(open('blacklist.json'))
-        feldloop    = json.load(open('feldloop.json'))
-        font        = graphics.Font()
-        anim_time   = 100
+        self.blacklist   = json.load(open('blacklist.json'))
+        self.feldloop    = json.load(open('feldloop.json'))
+        self.font        = graphics.Font()
+        self.anim_time   = 100
 
     def print_word(self, word, canvas):
 
@@ -33,7 +33,7 @@ class Feld(SampleBase):
 
         font.LoadFont("../fonts/4x6.bdf")
 
-        while c < anim_time:
+        while c < self.anim_time:
             canvas.Clear()
 
             # line
@@ -76,8 +76,8 @@ class Feld(SampleBase):
     def isblacklisted(self,word):
         return True if (word in self.blacklist) else False
 
-    def get_word_from_list():
-        return self.feldloop[random.randint(0,len(self.feldloop)-1)]
+    def get_word_from_list(self):
+        return vm.feldloop[random.randint(0,len(vm.feldloop)-1)]
 
     def get_word_from_api(self, url):
         try:
