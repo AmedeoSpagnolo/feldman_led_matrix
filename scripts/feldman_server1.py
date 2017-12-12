@@ -36,34 +36,38 @@ class Feld(SampleBase):
             canvas.Clear()
 
             # line
-            line = {}
-            line.x0 = margin_bottom + ll("FELD")
-            line.y0 = margin_top + 1
-            line.x1 = _to + (int((float(abs(_from - _to)) / steps) * (steps - c))) * sign
-            line.y1 = margin_top + 1
-            line.color = graphics.Color(255,255,255)
-            graphics.DrawLine(canvas, line.x0, line.y0, line.x1, line.y1, line.color)
+            l = {
+                "x0": margin_bottom + ll("FELD"),
+                "y0": margin_top + 1,
+                "x1": _to + (int((float(abs(_from - _to)) / steps) * (steps - c))) * sign,
+                "y1": margin_top + 1,
+                "color": graphics.Color(255,255,255)
+            }
+            graphics.DrawLine(canvas, l["x0"], l["y0"], l["x1"], l["y1"], l["color"])
 
             # dot
-            dot = {}
-            dot.x = line.x1
-            dot.y = margin_top - 1
-            dot.col = {"r": 255, "g": 255, "b": 255}
-            canvas.SetPixel(dot.x, dot.y, dot.col["r"], dot.col["g"], dot.col["b"])
+            d = {
+                "x": line.x1,
+                "y": margin_top - 1,
+                "col": {"r": 255, "g": 255, "b": 255}
+            }
+            canvas.SetPixel(d["x"], d["y"], d["col"]["r"], d["col"]["g"], d["col"]["b"])
 
             # feld
-            feld = {}
-            feld.x0 = margin_bottom
-            feld.y0 = margin_top
-            feld.color = graphics.Color(255,255,255)
-            graphics.DrawText(canvas, font, feld.x0, feld.y0, feld.color, "FELD")
+            f = {
+                "x0": margin_bottom,
+                "y0": margin_top,
+                "color": graphics.Color(255,255,255)
+            }
+            graphics.DrawText(canvas, font, f["x0"], f["y0"], f["color"], "FELD")
 
             # man
-            man = {}
-            man.x0 = margin_bottom + ll("FELD")
-            man.y0 = margin_top - int((float(5) / steps) * (steps - c))
-            man.color = graphics.Color(255,255,255)
-            graphics.DrawText(canvas, font, man.x0, man.y0, man.color, word)
+            m = {
+                "x0": margin_bottom + ll("FELD"),
+                "y0": margin_top - int((float(5) / steps) * (steps - c)),
+                "color": graphics.Color(255,255,255)
+            }
+            graphics.DrawText(canvas, font, m["x0"], m["y0"], m["color"], word)
 
             c += 1
             time.sleep(0.01)
