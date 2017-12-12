@@ -12,20 +12,18 @@ prev_word = ""
 class Feld(SampleBase):
     def __init__(self, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
-        canvas      = self.matrix.CreateFrameCanvas()
         blacklist   = json.load(open('blacklist.json'))
         feldloop    = json.load(open('feldloop.json'))
         font        = graphics.Font()
         anim_time   = 100
 
-    def print_word(word):
+    def print_word(self, word, canvas):
 
         def ll(string):
             return sum([font.CharacterWidth(ord(c)) for c in string])
 
         count   = 0
         font    = self.font
-        canvas  = self.convas
 
         margin_bottom   = 2
         margin_top      = self.matrix.height - 8
@@ -97,7 +95,7 @@ class Feld(SampleBase):
     def run(self):
         temp = self.get_word_from_api("http://localhost:8080")
         word = temp if (temp and temp != None) else self.get_word_from_list()
-        print_word(word)
+        print_word(word, self.matrix.CreateFrameCanvas())
         threading.Timer(2.0, run).start()
 
 # Main function
