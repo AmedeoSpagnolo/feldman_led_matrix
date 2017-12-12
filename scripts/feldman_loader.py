@@ -2,6 +2,7 @@
 from samplebase import SampleBase
 from rgbmatrix import graphics
 import time
+import json
 
 class Feld(SampleBase):
     def __init__(self, *args, **kwargs):
@@ -23,19 +24,7 @@ class Feld(SampleBase):
         # brightness
         max_brightness = self.matrix.brightness
 
-        loop = [
-          "man",
-          "design",
-          "branding",
-          "advertising",
-          "typography",
-          "photography",
-          "illustration",
-          "editorial",
-          "video",
-          "print",
-          "web"
-        ]
+        loop  = json.load(open('feldloop.json'))
 
         count       = 0
         marginleft  = 2

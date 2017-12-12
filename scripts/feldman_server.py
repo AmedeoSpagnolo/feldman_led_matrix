@@ -2,10 +2,10 @@
 import requests
 import threading
 import random
+import json
 
-blacklist = ["Jacob", "William", "Ethan", "James", "Alexander", "Jackson", "David", "Oliver", "Jayden", "Joseph", "Gabriel", "Samuel", "Carter", "Anthony", "John", "Dylan", "Luke", "Henry", "Andrew", "Isaac", "Christopher", "Joshua", "Wyatt", "Sebastian", "Owen", "Caleb", "Nathan"]
-
-loop = [ "man", "design", "branding", "advertising", "typography", "photography", "illustration", "editorial", "video", "print", "web"]
+blacklist = json.load(open('blacklist.json'))
+feldloop  = json.load(open('feldloop.json'))
 
 def print_on_led_matrix(word):
     print word
@@ -25,9 +25,9 @@ def request():
             threading.Timer(2.0, request).start()
             print_on_led_matrix(word)
         elif(word == "empty"):
-            threading.Timer(2.0, request).start()
+            threading.Timer(1.0, request).start()
             print "-"
-            print_on_led_matrix(loop[random.randint(0,len(loop)-1)])
+            print_on_led_matrix(feldloop[random.randint(0,len(feldloop)-1)])
         else:
             print "blacklisted: %s" % word
             request()
