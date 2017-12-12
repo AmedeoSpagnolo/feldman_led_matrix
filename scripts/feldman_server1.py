@@ -21,7 +21,7 @@ class Feld(SampleBase):
         def ll(string):
             return sum([font.CharacterWidth(ord(c)) for c in string])
 
-        count   = 0
+        c   = 0
         font    = self.font
 
         margin_bottom   = 2
@@ -32,7 +32,7 @@ class Feld(SampleBase):
 
         font.LoadFont("../fonts/4x6.bdf")
 
-        while c < self.anim_time:
+        while (c < self.anim_time):
             canvas.Clear()
 
             # line
