@@ -11,20 +11,15 @@ class Feld(SampleBase):
     def run(self):
         canvas = self.matrix.CreateFrameCanvas()
 
+        # assets
         red     = graphics.Color(255, 0, 0)
         green   = graphics.Color(0, 255, 0)
         blue    = graphics.Color(0, 0, 255)
         white   = graphics.Color(255,255,255)
         font    = graphics.Font()
+        loop    = json.load(open('feldloop.json'))
         font.LoadFont("../fonts/4x6.bdf")
-
-        # position
-        # pos = offscreen_canvas.width
-
-        # brightness
         max_brightness = self.matrix.brightness
-
-        loop  = json.load(open('feldloop.json'))
 
         count       = 0
         marginleft  = 2
@@ -40,12 +35,12 @@ class Feld(SampleBase):
             _to   = marginleft + ll("FELD" + loop[count])
             while c < steps:
 
-                # line and dot
-                if _from < _to:
-                    _step = _to - int((float(abs(_from - _to)) / steps) * (steps - c))
-                else:
-                    _step = _to + int((float(abs(_from - _to)) / steps) * (steps - c))
+                # line
+                direction = 1 if (_from < _to) else -1
+                _step = _to + (int((float(abs(_from - _to)) / steps) * (steps - c))) * direction
                 graphics.DrawLine(canvas, marginleft + ll("FELD"), margintop + 1, _step, margintop + 1, white)
+
+                # dot
                 canvas.SetPixel(_step, margintop - 1,255,255,255)
 
                 # feld
@@ -72,7 +67,6 @@ if __name__ == "__main__":
         feldman.print_help()
 
 # font
-# connessione server
 
 #####################
 

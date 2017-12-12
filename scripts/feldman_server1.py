@@ -1,0 +1,116 @@
+#!/usr/bin/env python
+from samplebase import SampleBase
+from rgbmatrix import graphics
+import time
+import json
+import requests
+import threading
+import random
+
+marginleft  = 2
+margintop   = 10
+
+previous_word = ""
+
+class Feld(SampleBase):
+    def __init__(self, *args, **kwargs):
+        super(Feld, self).__init__(*args, **kwargs)
+
+    def print_on_led_matrix(word):
+        print word
+        _from   = marginleft + ll("FELD" + previous_word)
+        _to   = marginleft + ll("FELD" + word)
+        while c < steps:
+
+            # line
+            direction = 1 if (_from < _to) else -1
+            _step = _to + (int((float(abs(_from - _to)) / steps) * (steps - c))) * direction
+            graphics.DrawLine(canvas, marginleft + ll("FELD"), margintop + 1, _step, margintop + 1, white)
+
+            # dot
+            canvas.SetPixel(_step, margintop - 1,255,255,255)
+
+            # feld
+            graphics.DrawText(canvas, font, marginleft, margintop, white, "FELD")
+
+            # man
+            y_man = margintop - int((float(5) / steps) * (steps - c))
+            graphics.DrawText(canvas, font, marginleft + ll("FELD"), y_man, white, loop[count])
+
+            c += 1
+            time.sleep(0.01)
+            canvas = self.matrix.SwapOnVSync(canvas)
+            canvas.Clear()
+
+        time.sleep(1.5)
+
+        count += 1
+        count = count % len(loop)
+
+    def blacklisted(word):
+        if (word in blacklist):
+            return False
+        else:
+            return True
+
+    def request():
+        r = requests.get('http://localhost:8080')
+        word = r.content.strip('"')
+        if (r.status_code == 200):
+            if (blacklisted(word) and word != "empty"):
+                # time.sleep(2.0)
+                threading.Timer(2.0, request).start()
+                print_on_led_matrix(word)
+            elif(word == "empty"):
+                threading.Timer(1.0, request).start()
+                print "-"
+                print_on_led_matrix(feldloop[random.randint(0,len(feldloop)-1)])
+            else:
+                print "blacklisted: %s" % word
+                request()
+        else:
+            print "not found!!"
+
+    def run(self):
+        canvas = self.matrix.CreateFrameCanvas()
+
+        # assets
+        red         = graphics.Color(255, 0, 0)
+        green       = graphics.Color(0, 255, 0)
+        blue        = graphics.Color(0, 0, 255)
+        white       = graphics.Color(255,255,255)
+        font        = graphics.Font()
+        blacklist   = json.load(open('blacklist.json'))
+        feldloop    = json.load(open('feldloop.json'))
+        font.LoadFont("../fonts/4x6.bdf")
+        max_brightness = self.matrix.brightness
+
+        def ll(string):
+            return sum([font.CharacterWidth(ord(c)) for c in string])
+
+        request()
+
+# Main function
+if __name__ == "__main__":
+    feldman = Feld()
+    if (not feldman.process()):
+        feldman.print_help()
+
+# font
+
+#####################
+
+# SetPixel
+# canvas.SetPixel(x,y,r,g,b)
+
+# DrawLine
+# graphics.DrawLine(canvas, x0, y0, x1, y1, graphics.Color(255, 0, 0))
+
+# DrawCircle
+# graphics.DrawCircle(canvas, cx, cy, r, graphics.Color(255, 0, 0))
+
+# DrawText
+# graphics.DrawText(canvas, font, 2, 10, blue, "Text")
+
+# Fill
+# self.matrix.Fill(c, 0, 0)
