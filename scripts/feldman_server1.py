@@ -7,8 +7,6 @@ import requests
 import threading
 import random
 
-prev_word = ""
-
 class Feld(SampleBase):
     def __init__(self, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
@@ -16,6 +14,7 @@ class Feld(SampleBase):
         self.feldloop    = json.load(open('feldloop.json'))
         self.font        = graphics.Font()
         self.anim_time   = 100
+        self.prev_word = ""
 
     def print_word(self, word, canvas):
 
@@ -28,7 +27,7 @@ class Feld(SampleBase):
         margin_bottom   = 2
         margin_top      = self.matrix.height - 8
         word_length     = margin_bottom + ll("FELD" + word)
-        prev_word_len   = margin_bottom + ll("FELD" + prev_word)
+        prev_word_len   = margin_bottom + ll("FELD" + self.prev_word)
         sign = 1 if (prev_word_len < word_length) else -1
 
         font.LoadFont("../fonts/4x6.bdf")
@@ -71,7 +70,7 @@ class Feld(SampleBase):
 
             canvas = self.matrix.SwapOnVSync(canvas)
 
-        prev_word = word
+        self.prev_word = word
 
     def isblacklisted(self,word):
         return True if (word in self.blacklist) else False
