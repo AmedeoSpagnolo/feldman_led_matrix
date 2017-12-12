@@ -1,63 +1,71 @@
 #!/usr/bin/env python
-from samplebase import SampleBase
-from rgbmatrix import graphics
+# from samplebase import SampleBase
+# from rgbmatrix import graphics
 import time
 import json
 import requests
 import threading
 import random
 
-marginleft  = 2
-margintop   = 10
+rbgmatrix = {}
+SampleBase = {}
 
 previous_word = ""
 
-class Feld(SampleBase):
+# class Feld(SampleBase):
+class Feld():
     def __init__(self, *args, **kwargs):
-        super(Feld, self).__init__(*args, **kwargs)
+        # super(Feld, self).__init__(*args, **kwargs)
+        pass
 
-    def print_on_led_matrix(word):
-        print word
-        _from   = marginleft + ll("FELD" + previous_word)
-        _to   = marginleft + ll("FELD" + word)
+    def print_on_led_matrix(word, prev_word):
+
+        margin_bottom  = 2
+        margin_top = self.matrix.height - 8
+        word_length = margin_bottom + ll("FELD" + previous_word)
+        prev_word_length = margin_bottom + ll("FELD" + word)
+        sign = 1 if (_from < _to) else -1
+
         while c < steps:
 
             # line
-            direction = 1 if (_from < _to) else -1
-            _step = _to + (int((float(abs(_from - _to)) / steps) * (steps - c))) * direction
-            graphics.DrawLine(canvas, marginleft + ll("FELD"), margintop + 1, _step, margintop + 1, white)
+            line = {}
+            line.x0 = margin_bottom + ll("FELD")
+            line.y0 = margin_top + 1
+            line.x1 = _to + (int((float(abs(_from - _to)) / steps) * (steps - c))) * sign
+            line.y1 = margin_top + 1
+            line.color = graphics.Color(255,255,255)
+            graphics.DrawLine(canvas, line.x0, line.y0, line.x1, line.y1, line.color)
 
             # dot
-            canvas.SetPixel(_step, margintop - 1,255,255,255)
+            dot = {}
+            dot.x = line.x1
+            dot.y = margin_top - 1
+            dot.col = {"r": 255, "g": 255, "b": 255}
+            canvas.SetPixel(dot.x, dot.y, dot.col["r"], dot.col["g"], dot.col["b"])
 
             # feld
-            graphics.DrawText(canvas, font, marginleft, margintop, white, "FELD")
+            feld = {}
+            feld.x0 = margin_bottom
+            feld.y0 = margin_top
+            feld.color = graphics.Color(255,255,255)
+            graphics.DrawText(canvas, font, feld.x0, feld.y0, feld.color, "FELD")
 
             # man
-            y_man = margintop - int((float(5) / steps) * (steps - c))
-            graphics.DrawText(canvas, font, marginleft + ll("FELD"), y_man, white, loop[count])
+            man = {}
+            man.x0 = margin_bottom + ll("FELD")
+            man.y0 = margin_top - int((float(5) / steps) * (steps - c))
+            man.color = graphics.Color(255,255,255)
+            graphics.DrawText(canvas, font, man.x0, man.y0, man.color, word)
 
-            c += 1
-            time.sleep(0.01)
-            canvas = self.matrix.SwapOnVSync(canvas)
-            canvas.Clear()
+    def blacklisted(self, word):
+        return False if (word in blacklist) else True
 
-        time.sleep(1.5)
-
-        count += 1
-        count = count % len(loop)
-
-    def blacklisted(word):
-        if (word in blacklist):
-            return False
-        else:
-            return True
-
-    def request():
+    def request(self):
         r = requests.get('http://localhost:8080')
         word = r.content.strip('"')
         if (r.status_code == 200):
-            if (blacklisted(word) and word != "empty"):
+            if (self.blacklisted(word) and word != "empty"):
                 # time.sleep(2.0)
                 threading.Timer(2.0, request).start()
                 print_on_led_matrix(word)
@@ -72,45 +80,35 @@ class Feld(SampleBase):
             print "not found!!"
 
     def run(self):
-        canvas = self.matrix.CreateFrameCanvas()
+        print "run"
+        # canvas = self.matrix.CreateFrameCanvas()
+        #
+        # # assets
+        # font        = graphics.Font()
+        # blacklist   = json.load(open('blacklist.json'))
+        # feldloop    = json.load(open('feldloop.json'))
+        # font.LoadFont("../fonts/4x6.bdf")
+        # max_brightness = self.matrix.brightness
+        #
+        # def ll(string):
+        #     return sum([font.CharacterWidth(ord(c)) for c in string])
+        #
+        # count = 0
+        # word = request()
+        # print_on_led_matrix(word)
+        #     c += 1
+        #     time.sleep(0.01)
+        #     canvas = self.matrix.SwapOnVSync(canvas)
+        #     canvas.Clear()
+        #
+        # time.sleep(1.5)
+        #
+        # count += 1
+        # count = count % len(loop)
 
-        # assets
-        red         = graphics.Color(255, 0, 0)
-        green       = graphics.Color(0, 255, 0)
-        blue        = graphics.Color(0, 0, 255)
-        white       = graphics.Color(255,255,255)
-        font        = graphics.Font()
-        blacklist   = json.load(open('blacklist.json'))
-        feldloop    = json.load(open('feldloop.json'))
-        font.LoadFont("../fonts/4x6.bdf")
-        max_brightness = self.matrix.brightness
-
-        def ll(string):
-            return sum([font.CharacterWidth(ord(c)) for c in string])
-
-        request()
 
 # Main function
 if __name__ == "__main__":
     feldman = Feld()
     if (not feldman.process()):
         feldman.print_help()
-
-# font
-
-#####################
-
-# SetPixel
-# canvas.SetPixel(x,y,r,g,b)
-
-# DrawLine
-# graphics.DrawLine(canvas, x0, y0, x1, y1, graphics.Color(255, 0, 0))
-
-# DrawCircle
-# graphics.DrawCircle(canvas, cx, cy, r, graphics.Color(255, 0, 0))
-
-# DrawText
-# graphics.DrawText(canvas, font, 2, 10, blue, "Text")
-
-# Fill
-# self.matrix.Fill(c, 0, 0)
