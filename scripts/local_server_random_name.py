@@ -6,7 +6,7 @@ import random
 PORT_NUMBER = 8080
 
 data = {
-	"wordlist": [ "Jacob", "William", "Ethan", "James", "Alexander", "Michael", "Benjamin", "Elijah", "Daniel", "Aiden", "Logan", "Matthew", "Lucas", "Jackson", "David", "Oliver", "Jayden", "Joseph", "Gabriel", "Samuel", "Carter", "Anthony", "John", "Dylan", "Luke", "Henry", "Andrew", "Isaac", "Christopher", "Joshua", "Wyatt", "Sebastian", "Owen", "Caleb", "Nathan", "Ryan" ]
+	"wordlist": [ "Jacob", "William", "Ethan", "James", "Alexander", "Michael", "Benjamin", "Elijah", "Daniel", "Aiden", "Logan", "Matthew", "Lucas", "Jackson", "David", "Oliver", "Jayden", "Joseph", "Gabriel", "Samuel", "Carter", "Anthony", "John", "Dylan", "Luke", "Henry", "Andrew", "Isaac", "Christopher", "Joshua", "Wyatt", "Sebastian", "Owen", "Caleb", "Nathan", "Ryan", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty"]
 }
 
 #This class will handles any incoming request from
@@ -18,7 +18,7 @@ class myHandler(BaseHTTPRequestHandler):
 		self.send_response(200)
 		self.send_header('Content-type','application/json')
 		self.end_headers()
-		rr = random.randint(0,len(data["wordlist"]))
+		rr = random.randint(0,len(data["wordlist"])-1)
 		out = data["wordlist"][rr]
 		self.wfile.write(json.dumps(out))
 		return
