@@ -106,3 +106,4 @@ Follow the [instuction](http://google.com) for wiring the led Screen
 ### Server Felman
 
 		boris server --led-chain=4 --led-rows=16
+		cd ~/feldman_led_matrix/scripts/ && sudo python feldman_server1.py --led-rows=16 --led-chain=2

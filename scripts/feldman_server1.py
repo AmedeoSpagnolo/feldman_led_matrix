@@ -77,7 +77,7 @@ class Feld(SampleBase):
         return True if (word in self.blacklist) else False
 
     def get_word_from_list(self):
-        return vm.feldloop[random.randint(0,len(vm.feldloop)-1)]
+        return self.feldloop[random.randint(0,len(self.feldloop)-1)]
 
     def get_word_from_api(self, url):
         try:
