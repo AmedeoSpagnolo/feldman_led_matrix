@@ -100,7 +100,7 @@ class Feld(SampleBase):
         temp = self.get_word_from_api("http://localhost:8080")
         word = temp if (temp and temp != None) else self.get_word_from_list()
         self.print_word(word, self.matrix.CreateFrameCanvas())
-        threading.Timer(2.0, run).start()
+        threading.Timer(2.0, self.run).start()
 
 # Main function
 if __name__ == "__main__":
