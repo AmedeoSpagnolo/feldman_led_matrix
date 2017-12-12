@@ -48,7 +48,7 @@ class Feld(SampleBase):
 
             # dot
             d = {
-                "x": line.x1,
+                "x": l["x1"],
                 "y": margin_top - 1,
                 "col": {"r": 255, "g": 255, "b": 255}
             }
