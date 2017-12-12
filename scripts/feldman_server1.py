@@ -28,11 +28,12 @@ class Feld(SampleBase):
         margin_top      = self.matrix.height - 8
         word_length     = margin_bottom + ll("FELD" + word)
         prev_word_len   = margin_bottom + ll("FELD" + self.prev_word)
+        steps           = self.anim_time
         sign = 1 if (prev_word_len < word_length) else -1
 
         font.LoadFont("../fonts/4x6.bdf")
 
-        while (c < self.anim_time):
+        while (c < steps):
             canvas.Clear()
 
             # line
