@@ -39,7 +39,7 @@ class Feld(SampleBase):
             l = {
                 "x0": margin_bottom + ll("FELD"),
                 "y0": margin_top + 1,
-                "x1": _to + (int((float(abs(_from - _to)) / steps) * (steps - c))) * sign,
+                "x1": word_length + (int((float(abs(prev_word_len - word_length)) / steps) * (steps - c))) * sign,
                 "y1": margin_top + 1,
                 "color": graphics.Color(255,255,255)
             }
