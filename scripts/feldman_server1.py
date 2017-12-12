@@ -13,7 +13,7 @@ class Feld(SampleBase):
         self.blacklist   = json.load(open('blacklist.json'))
         self.feldloop    = json.load(open('feldloop.json'))
         self.font        = graphics.Font()
-        self.anim_time   = 100
+        self.anim_time   = 15
         self.prev_word = ""
 
     def print_word(self, word, canvas):
