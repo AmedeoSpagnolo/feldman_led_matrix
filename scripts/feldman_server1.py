@@ -7,110 +7,103 @@ import requests
 import threading
 import random
 
-marginleft  = 2
-margintop   = 10
-
-previous_word = ""
-
 class Feld(SampleBase):
     def __init__(self, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
+        self.blacklist   = json.load(open('blacklist.json'))
+        self.feldloop    = json.load(open('feldloop.json'))
+        self.font        = graphics.Font()
+        self.anim_time   = 15
+        self.prev_word = ""
 
-    def print_on_led_matrix(word):
-        print word
-        _from   = marginleft + ll("FELD" + previous_word)
-        _to   = marginleft + ll("FELD" + word)
-        while c < steps:
-
-            # line
-            direction = 1 if (_from < _to) else -1
-            _step = _to + (int((float(abs(_from - _to)) / steps) * (steps - c))) * direction
-            graphics.DrawLine(canvas, marginleft + ll("FELD"), margintop + 1, _step, margintop + 1, white)
-
-            # dot
-            canvas.SetPixel(_step, margintop - 1,255,255,255)
-
-            # feld
-            graphics.DrawText(canvas, font, marginleft, margintop, white, "FELD")
-
-            # man
-            y_man = margintop - int((float(5) / steps) * (steps - c))
-            graphics.DrawText(canvas, font, marginleft + ll("FELD"), y_man, white, loop[count])
-
-            c += 1
-            time.sleep(0.01)
-            canvas = self.matrix.SwapOnVSync(canvas)
-            canvas.Clear()
-
-        time.sleep(1.5)
-
-        count += 1
-        count = count % len(loop)
-
-    def blacklisted(word):
-        if (word in blacklist):
-            return False
-        else:
-            return True
-
-    def request():
-        r = requests.get('http://localhost:8080')
-        word = r.content.strip('"')
-        if (r.status_code == 200):
-            if (blacklisted(word) and word != "empty"):
-                # time.sleep(2.0)
-                threading.Timer(2.0, request).start()
-                print_on_led_matrix(word)
-            elif(word == "empty"):
-                threading.Timer(1.0, request).start()
-                print "-"
-                print_on_led_matrix(feldloop[random.randint(0,len(feldloop)-1)])
-            else:
-                print "blacklisted: %s" % word
-                request()
-        else:
-            print "not found!!"
-
-    def run(self):
-        canvas = self.matrix.CreateFrameCanvas()
-
-        # assets
-        red         = graphics.Color(255, 0, 0)
-        green       = graphics.Color(0, 255, 0)
-        blue        = graphics.Color(0, 0, 255)
-        white       = graphics.Color(255,255,255)
-        font        = graphics.Font()
-        blacklist   = json.load(open('blacklist.json'))
-        feldloop    = json.load(open('feldloop.json'))
-        font.LoadFont("../fonts/4x6.bdf")
-        max_brightness = self.matrix.brightness
+    def print_word(self, word, canvas):
 
         def ll(string):
             return sum([font.CharacterWidth(ord(c)) for c in string])
 
-        request()
+        c   = 0
+        font    = self.font
+
+        margin_bottom   = 2
+        margin_top      = self.matrix.height - 8
+        word_length     = margin_bottom + ll("FELD" + word)
+        prev_word_len   = margin_bottom + ll("FELD" + self.prev_word)
+        steps           = self.anim_time
+        sign = 1 if (prev_word_len < word_length) else -1
+
+        font.LoadFont("../fonts/4x6.bdf")
+
+        while (c < steps):
+            canvas.Clear()
+
+            # line
+            l = {
+                "x0": margin_bottom + ll("FELD"),
+                "y0": margin_top + 1,
+                "x1": word_length + (int((float(abs(prev_word_len - word_length)) / steps) * (steps - c))) * sign,
+                "y1": margin_top + 1,
+                "color": graphics.Color(255,255,255)
+            }
+            graphics.DrawLine(canvas, l["x0"], l["y0"], l["x1"], l["y1"], l["color"])
+
+            # dot
+            d = {
+                "x": l["x1"],
+                "y": margin_top - 1,
+                "col": {"r": 255, "g": 255, "b": 255}
+            }
+            canvas.SetPixel(d["x"], d["y"], d["col"]["r"], d["col"]["g"], d["col"]["b"])
+
+            # feld
+            f = {
+                "x0": margin_bottom,
+                "y0": margin_top,
+                "color": graphics.Color(255,255,255)
+            }
+            graphics.DrawText(canvas, font, f["x0"], f["y0"], f["color"], "FELD")
+
+            # man
+            m = {
+                "x0": margin_bottom + ll("FELD"),
+                "y0": margin_top - int((float(5) / steps) * (steps - c)),
+                "color": graphics.Color(255,255,255)
+            }
+            graphics.DrawText(canvas, font, m["x0"], m["y0"], m["color"], word)
+
+            c += 1
+            time.sleep(0.01)
+
+            canvas = self.matrix.SwapOnVSync(canvas)
+
+        self.prev_word = word
+
+    def isblacklisted(self,word):
+        return True if (word in self.blacklist) else False
+
+    def get_word_from_list(self):
+        return self.feldloop[random.randint(0,len(self.feldloop)-1)]
+
+    def get_word_from_api(self, url):
+        try:
+            r = requests.get(url)
+            word = r.content[1:-1]
+            if (self.isblacklisted(word)):
+                return word
+            else:
+                print "blacklisted: %s" % word
+                return False
+        except requests.exceptions.RequestException as e:
+            print e
+            return False
+
+    def run(self):
+        temp = self.get_word_from_api("http://192.168.43.155:8080")
+        word = temp if (temp and temp != None) else self.get_word_from_list()
+        self.print_word(word, self.matrix.CreateFrameCanvas())
+        threading.Timer(2.0, self.run).start()
 
 # Main function
 if __name__ == "__main__":
     feldman = Feld()
     if (not feldman.process()):
         feldman.print_help()
-
-# font
-
-#####################
-
-# SetPixel
-# canvas.SetPixel(x,y,r,g,b)
-
-# DrawLine
-# graphics.DrawLine(canvas, x0, y0, x1, y1, graphics.Color(255, 0, 0))
-
-# DrawCircle
-# graphics.DrawCircle(canvas, cx, cy, r, graphics.Color(255, 0, 0))
-
-# DrawText
-# graphics.DrawText(canvas, font, 2, 10, blue, "Text")
-
-# Fill
-# self.matrix.Fill(c, 0, 0)
