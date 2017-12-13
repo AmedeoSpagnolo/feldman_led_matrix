@@ -5,12 +5,16 @@ import threading
 
 blacklist   = json.load(open('blacklist.json'))
 feldloop    = json.load(open('feldloop.json'))
+names       = json.load(open('names.json'))
 
-def isblacklisted(word):
-    return True if (word in blacklist) else False
+def isblacklisted(sentence):
+    if (any([ (i in " ".join(blacklist)) for i in sentence.split()])):
+        return True
+    else:
+        return False
 
-def get_word_from_list():
-    return feldloop[random.randint(0,len(feldloop)-1)]
+def get_word_from_list(arr):
+    return arr[random.randint(0,len(arr)-1)]
 
 def get_word_from_api(url):
     try:
@@ -37,4 +41,5 @@ def request():
         print word
         threading.Timer(2.0, request).start()
 
-print request()
+print isblacklisted("my friend")
+# print isblacklisted("cocks cocks")
