@@ -19,12 +19,12 @@ def get_word_from_list(arr):
 def get_word_from_api(url):
     try:
         r = requests.get(url)
-        word = r.content[1:-1]
-        if (isblacklisted(word)):
-            return word
+        sentence = r.content[1:-1]
+        if (isblacklisted(sentence)):
+            return sentence
         else:
+            print "BLACKLISTED: %s" % sentence
             return False
-            print "blacklisted: %s" % word
     except requests.exceptions.RequestException as e:
         return False
         print e
