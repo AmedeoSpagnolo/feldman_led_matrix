@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# #!/usr/bin/env python
 from samplebase import SampleBase
 from rgbmatrix import graphics
 import time
@@ -7,7 +7,7 @@ import json
 class Feld(SampleBase):
     def __init__(self, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
-        print *args
+        print args
 
     def run(self):
         canvas = self.matrix.CreateFrameCanvas()
@@ -60,28 +60,3 @@ class Feld(SampleBase):
 
             count += 1
             count = count % len(loop)
-
-# Main function
-if __name__ == "__main__":
-    feldman = Feld()
-    if (not feldman.process()):
-        feldman.print_help()
-
-# font
-
-#####################
-
-# SetPixel
-# canvas.SetPixel(x,y,r,g,b)
-
-# DrawLine
-# graphics.DrawLine(canvas, x0, y0, x1, y1, graphics.Color(255, 0, 0))
-
-# DrawCircle
-# graphics.DrawCircle(canvas, cx, cy, r, graphics.Color(255, 0, 0))
-
-# DrawText
-# graphics.DrawText(canvas, font, 2, 10, blue, "Text")
-
-# Fill
-# self.matrix.Fill(c, 0, 0)
