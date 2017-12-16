@@ -13,7 +13,7 @@ class Feld(SampleBase):
         self.parser.add_argument(
             "-a",
             "--api",
-            action="store_true"
+            action="store_true",
             help="set False for Simple Loader")
         self.parser.add_argument(
             '--port',
