@@ -13,7 +13,7 @@ class Feld(SampleBase):
     def __init__(self, opt, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
         self.blacklist   = json.load(open('assets/datasets/blacklist.json'))
-        self.self.feldloop    = json.load(open('assets/datasets/feldloop.json'))
+        self.feldloop    = json.load(open('assets/datasets/feldloop.json'))
         self.font        = graphics.Font()
         self.anim_time   = 15
         self.prev_word = ""
