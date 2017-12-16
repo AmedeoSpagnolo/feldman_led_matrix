@@ -13,7 +13,7 @@ class Feld(SampleBase):
     def __init__(self, opt, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
         self.blacklist   = json.load(open('assets/datasets/blacklist.json'))
-        self.self.feldloop    = json.load(open('assets/datasets/self.feldloop.json'))
+        self.self.feldloop    = json.load(open('assets/datasets/feldloop.json'))
         self.font        = graphics.Font()
         self.anim_time   = 15
         self.prev_word = ""
@@ -117,7 +117,7 @@ class Feld(SampleBase):
             count = 0
             while True:
                 self.print_word(self.feldloop[count], self.matrix.CreateFrameCanvas())
-                count = 1 + count % len(feldloop)
+                count = 1 + count % len(self.feldloop)
                 print count
 
 # Main function
