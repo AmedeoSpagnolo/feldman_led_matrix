@@ -4,10 +4,11 @@ from rgbmatrix import graphics
 import time
 import json
 
-class Feld(SampleBase, obj = {}):
+class Feld(SampleBase):
     def __init__(self, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
-        print obj
+        print dir(Feld)
+        print args
 
     def run(self):
         canvas = self.matrix.CreateFrameCanvas()
