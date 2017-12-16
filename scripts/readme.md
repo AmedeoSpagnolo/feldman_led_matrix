@@ -1,15 +1,20 @@
-### run local server
+### run local server (from other device in the same network)
 
-    python start_local_server.py
+    cd ~/feldman_led_matrix/frontend && python start_local_server.py
 
-### simple api request
+##### simple api request
 
-    curl http://localhost:8080
-
-### start feldman loader with api
-
-    python feldman_server.py
+    curl http://<ip>:<port>
 
 ### start simple feldman loader
 
-    sudo python feldman_loader.py --led-chain=2 --led-rows=16
+    cd ~/feldman_led_matrix/scripts && sudo python feldman.py --led-chain=2 --led-rows=16
+
+### start feldman loader with api
+
+    cd ~/feldman_led_matrix/scripts && sudo python feldman.py --api --port=8080 --ip=192.168.50.61 --led-chain=2 --led-rows=16
+
+#### to do
+- font
+- timing
+- animation (prev word)
