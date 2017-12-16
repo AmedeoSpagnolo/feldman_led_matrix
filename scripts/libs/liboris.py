@@ -116,7 +116,7 @@ class Feld(SampleBase):
         else:
             count = 0
             while True:
-                print count
+                time.sleep(2.0)
                 self.print_word(self.feldloop[count], self.matrix.CreateFrameCanvas())
                 count = (1 + count) % len(self.feldloop)
 
