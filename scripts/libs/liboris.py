@@ -30,7 +30,7 @@ class Feld(SampleBase):
         self.font        = graphics.Font()
         self.anim_time   = 15
         self.prev_word = ""
-        self.args = parser.parse_args()
+        self.args = self.parser.parse_args()
         self.api = args.api
         self.url = "http://\%s:%s" % (args.ip, args.port)
 
