@@ -18,8 +18,6 @@ class Feld(SampleBase):
         self.api = opt["api"]
         self.url = "http://\%s:%s" % (opt["ip"], opt["port"])
 
-        matrix.brightness = 10
-
     def print_word(self, word, canvas):
 
         def ll(string):
@@ -35,6 +33,7 @@ class Feld(SampleBase):
         steps           = self.anim_time
         sign = 1 if (prev_word_len < word_length) else -1
 
+        self.matrix.brightness = 10
         font.LoadFont("assets/fonts/4x6.bdf")
 
         while (c < steps):
