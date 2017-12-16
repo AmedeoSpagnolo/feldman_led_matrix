@@ -3,29 +3,6 @@ from samplebase import SampleBase
 from rgbmatrix import graphics
 import time
 import json
-import argparse
-
-class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
-    pass
-
-parser = argparse.ArgumentParser(
-    add_help=False,
-    formatter_class=CustomFormatter)
-parser.add_argument(
-    '-v',
-    '--version',
-    action='version',
-    version='%(prog)s 1.0')
-parser.add_argument(
-    '-s',
-    '--simple_loader',
-    action='store_true')
-parser.add_argument(
-    '-c',
-    '--call_api',
-    action='store_true')
-
-args = parser.parse_args()
 
 class Feld(SampleBase, obj = {}):
     def __init__(self, *args, **kwargs):
@@ -86,10 +63,7 @@ class Feld(SampleBase, obj = {}):
 
 # Main function
 if __name__ == "__main__":
-    if args.simple_loader:
-        feldman = Feld({"api": False})
-    elif args.call_api:
-        feldman = Feld({"api": True})
+    feldman = Feld()
     if (not feldman.process()):
         feldman.print_help()
 
