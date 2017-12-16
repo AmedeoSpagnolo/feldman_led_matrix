@@ -31,7 +31,7 @@ class Feld(SampleBase):
         self.anim_time   = 15
         self.prev_word = ""
         self.args = self.parser.parse_args()
-        self.api = args.api
+        self.api = self.args.api
         self.url = "http://\%s:%s" % (args.ip, args.port)
 
     def print_word(self, word, canvas):
