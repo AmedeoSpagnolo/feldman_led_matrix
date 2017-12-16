@@ -37,9 +37,10 @@ class Feld(SampleBase):
         self.url = "http://\%s:%s" % (self.args.ip, self.args.port)
 
         print self.api
-        print self.ip
-        print self.port
+        print self.args.ip
+        print self.args.port
         print self.url
+        print self.args
 
     def print_word(self, word, canvas):
 
