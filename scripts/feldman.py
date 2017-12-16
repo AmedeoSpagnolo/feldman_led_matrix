@@ -16,7 +16,7 @@ class Feld(SampleBase):
             "-a",
             "--api",
             action="store_true",
-            help="set False for Simple Loader")
+            help="get words from api")
         self.parser.add_argument(
             '--port',
             nargs=1,
@@ -35,6 +35,11 @@ class Feld(SampleBase):
         self.args = self.parser.parse_args()
         self.api = self.args.api
         self.url = "http://\%s:%s" % (self.args.ip, self.args.port)
+
+        print self.api
+        print self.ip
+        print self.port
+        print self.url
 
     def print_word(self, word, canvas):
 
