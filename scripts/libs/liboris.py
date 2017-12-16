@@ -1,62 +1,124 @@
-# #!/usr/bin/env python
+#!/usr/bin/env python
 from samplebase import SampleBase
 from rgbmatrix import graphics
 import time
 import json
+import requests
+import threading
+import random
 
 class Feld(SampleBase):
     def __init__(self, opt, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
-        print dir(self)
+        self.blacklist   = json.load(open('assets/datasets/blacklist.json'))
+        self.feldloop    = json.load(open('assets/datasets/feldloop.json'))
+        self.font        = graphics.Font()
+        self.anim_time   = 15
+        self.prev_word = ""
+        self.api = opt["api"]
+        self.url = "http://\%s:%s" % (opt["ip"], opt["port"])
 
-    def run(self):
-        canvas = self.matrix.CreateFrameCanvas()
+        print self.url
+        print self.api
 
-        # assets
-        red     = graphics.Color(255, 0, 0)
-        green   = graphics.Color(0, 255, 0)
-        blue    = graphics.Color(0, 0, 255)
-        white   = graphics.Color(255,255,255)
-        font    = graphics.Font()
-        loop    = json.load(open('assets/datasets/feldloop.json'))
-        font.LoadFont("assets/fonts/4x6.bdf")
-        max_brightness = self.matrix.brightness
-
-        count       = 0
-        marginleft  = 2
-        margintop   = 10
+    def print_word(self, word, canvas):
 
         def ll(string):
             return sum([font.CharacterWidth(ord(c)) for c in string])
 
-        while True:
-            c = 0
-            steps = 20
-            _from   = marginleft + ll("FELD" + loop[(count - 1) + count / len(loop)])
-            _to   = marginleft + ll("FELD" + loop[count])
-            while c < steps:
+        c   = 0
+        font    = self.font
 
-                # line
-                direction = 1 if (_from < _to) else -1
-                _step = _to + (int((float(abs(_from - _to)) / steps) * (steps - c))) * direction
-                graphics.DrawLine(canvas, marginleft + ll("FELD"), margintop + 1, _step, margintop + 1, white)
+        margin_bottom   = 2
+        margin_top      = self.matrix.height - 8
+        word_length     = margin_bottom + ll("FELD" + word)
+        prev_word_len   = margin_bottom + ll("FELD" + self.prev_word)
+        steps           = self.anim_time
+        sign = 1 if (prev_word_len < word_length) else -1
 
-                # dot
-                canvas.SetPixel(_step, margintop - 1,255,255,255)
+        font.LoadFont("assets/fonts/4x6.bdf")
 
-                # feld
-                graphics.DrawText(canvas, font, marginleft, margintop, white, "FELD")
+        while (c < steps):
+            canvas.Clear()
 
-                # man
-                y_man = margintop - int((float(5) / steps) * (steps - c))
-                graphics.DrawText(canvas, font, marginleft + ll("FELD"), y_man, white, loop[count])
+            # line
+            l = {
+                "x0": margin_bottom + ll("FELD"),
+                "y0": margin_top + 1,
+                "x1": word_length + (int((float(abs(prev_word_len - word_length)) / steps) * (steps - c))) * sign,
+                "y1": margin_top + 1,
+                "color": graphics.Color(255,255,255)
+            }
+            graphics.DrawLine(canvas, l["x0"], l["y0"], l["x1"], l["y1"], l["color"])
 
-                c += 1
-                time.sleep(0.01)
-                canvas = self.matrix.SwapOnVSync(canvas)
-                canvas.Clear()
+            # dot
+            d = {
+                "x": l["x1"],
+                "y": margin_top - 1,
+                "col": {"r": 255, "g": 255, "b": 255}
+            }
+            canvas.SetPixel(d["x"], d["y"], d["col"]["r"], d["col"]["g"], d["col"]["b"])
 
-            time.sleep(1.5)
+            # feld
+            f = {
+                "x0": margin_bottom,
+                "y0": margin_top,
+                "color": graphics.Color(255,255,255)
+            }
+            graphics.DrawText(canvas, font, f["x0"], f["y0"], f["color"], "FELD")
 
-            count += 1
-            count = count % len(loop)
+            # man
+            m = {
+                "x0": margin_bottom + ll("FELD"),
+                "y0": margin_top - int((float(5) / steps) * (steps - c)),
+                "color": graphics.Color(255,255,255)
+            }
+            graphics.DrawText(canvas, font, m["x0"], m["y0"], m["color"], word)
+
+            c += 1
+            time.sleep(0.01)
+
+            canvas = self.matrix.SwapOnVSync(canvas)
+
+        self.prev_word = word
+
+    def isblacklisted(self, sentence):
+        if (any([ (i in " ".join(self.blacklist)) for i in sentence.split()])):
+            return True
+        else:
+            return False
+
+    def get_word_from_list(self, arr):
+        return self.arr[random.randint(0,len(self.arr)-1)]
+
+    def get_word_from_api(self, url):
+        try:
+            r = requests.get(url)
+            word = r.content[1:-1]
+            if (self.isblacklisted(word)):
+                return word
+            else:
+                print "blacklisted: %s" % word
+                return False
+        except requests.exceptions.RequestException as e:
+            print e
+            return False
+
+    def run(self):
+        if self.api:
+            temp = self.get_word_from_api(self.url)
+            word = temp if (temp and temp != None) else self.get_word_from_list(feldloop)
+            self.print_word(word, self.matrix.CreateFrameCanvas())
+            threading.Timer(2.0, self.run).start()
+        else:
+            count = 0
+            while True:
+                self.print_word(feldloop[count], self.matrix.CreateFrameCanvas())
+                count = 1 + count % len(feldloop)
+                print count
+
+# Main function
+if __name__ == "__main__":
+    feldman = Feld()
+    if (not feldman.process()):
+        feldman.print_help()
