@@ -1,2 +1,2 @@
 #!/bin/bash
-cd ~/feldman_led_matrix/scripts && sudo python feldman.py --api --port=8080 --ip=192.168.50.61
+cd ~/feldman_led_matrix/scripts && sudo python feldman.py --api --port=8080 --ip=192.168.50.61 --led-chain=2 --led-rows=16
