@@ -8,15 +8,35 @@ import threading
 import random
 
 class Feld(SampleBase):
-    def __init__(self, opt, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
+        self.parser.add_argument(
+            "-a",
+            "--api",
+            action="store_true"
+            help="set False for Simple Loader")
+        self.parser.add_argument(
+            '--port',
+            nargs="1",
+            default=False,
+            required=False)
+        self.parser.add_argument(
+            '--ip',
+            nargs="1",
+            default=False,
+            required=False)
         self.blacklist   = json.load(open('assets/datasets/blacklist.json'))
         self.feldloop    = json.load(open('assets/datasets/feldloop.json'))
         self.font        = graphics.Font()
         self.anim_time   = 15
         self.prev_word = ""
-        self.api = opt["api"]
-        self.url = "http://\%s:%s" % (opt["ip"], opt["port"])
+        self.args = parser.parse_args()
+        self.api = args.api
+        self.url = "http://\%s:%s" % (args.ip, args.port)
+
+opt = {
+    "ip": "localhost",
+    "port": 8080}
 
     def print_word(self, word, canvas):
 
@@ -103,7 +123,6 @@ class Feld(SampleBase):
             return False
 
     def run(self):
-        print "run"
         if self.api:
             temp = self.get_word_from_api(self.url)
             word = temp if (temp and temp != None) else self.get_word_from_list(self.feldloop)

@@ -7,7 +7,7 @@ from pprint import pprint
 PORT_NUMBER = 8080
 HOST_NAME = 'localhost'
 
-wordlist = json.load(open('names.json'))
+wordlist = json.load(open('../scripts/assets/datasets/names.json'))
 
 #This class will handles any incoming request from
 #the browser
