@@ -77,11 +77,14 @@ class Feld(SampleBase):
 
         self.prev_word = word
 
-    def isblacklisted(self,word):
-        return True if (word in self.blacklist) else False
+    def isblacklisted(self, sentence):
+        if (any([ (i in " ".join(self.blacklist)) for i in sentence.split()])):
+            return True
+        else:
+            return False
 
-    def get_word_from_list(self):
-        return self.feldloop[random.randint(0,len(self.feldloop)-1)]
+    def get_word_from_list(self, arr):
+        return self.arr[random.randint(0,len(self.arr)-1)]
 
     def get_word_from_api(self, url):
         try:
@@ -98,7 +101,7 @@ class Feld(SampleBase):
 
     def run(self):
         temp = self.get_word_from_api("http://192.168.43.155:8080")
-        word = temp if (temp and temp != None) else self.get_word_from_list()
+        word = temp if (temp and temp != None) else self.get_word_from_list(feldloop)
         self.print_word(word, self.matrix.CreateFrameCanvas())
         threading.Timer(2.0, self.run).start()
 
