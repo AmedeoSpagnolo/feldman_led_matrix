@@ -18,7 +18,7 @@ class Feld(SampleBase):
         self.api = opt["api"]
         self.url = "http://\%s:%s" % (opt["ip"], opt["port"])
 
-        self.matrix.brightness = 10
+        matrix.brightness = 10
 
     def print_word(self, word, canvas):
 
