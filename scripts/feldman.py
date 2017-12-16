@@ -127,8 +127,10 @@ class Feld(SampleBase):
             self.print_word(word, self.matrix.CreateFrameCanvas())
             threading.Timer(2.0, self.run).start()
         else:
+            print "simple loader"
             count = 0
             while True:
+                print self.prev_word
                 time.sleep(2.0)
                 self.print_word(self.feldloop[count], self.matrix.CreateFrameCanvas())
                 count = (1 + count) % len(self.feldloop)
