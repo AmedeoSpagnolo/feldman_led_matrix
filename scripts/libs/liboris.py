@@ -18,8 +18,8 @@ class Feld(SampleBase):
         blue    = graphics.Color(0, 0, 255)
         white   = graphics.Color(255,255,255)
         font    = graphics.Font()
-        loop    = json.load(open('feldloop.json'))
-        font.LoadFont("../fonts/4x6.bdf")
+        loop    = json.load(open('../assets/datasets/feldloop.json'))
+        font.LoadFont("../assets/fonts/4x6.bdf")
         max_brightness = self.matrix.brightness
 
         count       = 0
