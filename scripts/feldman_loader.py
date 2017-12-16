@@ -8,7 +8,7 @@ class Feld(SampleBase):
     def __init__(self, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
         print dir(Feld)
-        print args
+        print *args
 
     def run(self):
         canvas = self.matrix.CreateFrameCanvas()
