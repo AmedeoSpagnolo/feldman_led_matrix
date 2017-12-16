@@ -100,9 +100,9 @@ class Feld(SampleBase):
 
     def isblacklisted(self, sentence):
         if (any([ (i in " ".join(self.blacklist)) for i in sentence.split()])):
-            return True
-        else:
             return False
+        else:
+            return True
 
     def get_word_from_list(self, arr):
         return arr[random.randint(0,len(arr)-1)]
