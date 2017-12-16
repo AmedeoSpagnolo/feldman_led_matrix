@@ -33,7 +33,7 @@ class Feld(SampleBase):
         steps           = self.anim_time
         sign = 1 if (prev_word_len < word_length) else -1
 
-        self.matrix.brightness = 10
+        self.matrix.brightness = 50
         font.LoadFont("assets/fonts/4x6.bdf")
 
         while (c < steps):
