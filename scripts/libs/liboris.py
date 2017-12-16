@@ -7,8 +7,6 @@ import requests
 import threading
 import random
 
-print "liborid"
-
 class Feld(SampleBase):
     def __init__(self, opt, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
@@ -20,8 +18,7 @@ class Feld(SampleBase):
         self.api = opt["api"]
         self.url = "http://\%s:%s" % (opt["ip"], opt["port"])
 
-        print self.url
-        print self.api
+        self.matrix.brightness = 10
 
     def print_word(self, word, canvas):
 
