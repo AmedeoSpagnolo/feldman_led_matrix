@@ -34,10 +34,6 @@ class Feld(SampleBase):
         self.api = args.api
         self.url = "http://\%s:%s" % (args.ip, args.port)
 
-opt = {
-    "ip": "localhost",
-    "port": 8080}
-
     def print_word(self, word, canvas):
 
         def ll(string):
