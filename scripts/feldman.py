@@ -4,6 +4,9 @@ import argparse
 sys.path.append(sys.path[0])
 from libs.liboris import *
 
+class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
+    pass
+
 parser = argparse.ArgumentParser(
     add_help=True,
     description="Boris Feldman Script by Amedeo Spagnolo",
@@ -21,6 +24,8 @@ parser.add_argument(
     action='store_true')
 
 args = parser.parse_args()
+
+print args
 
 if __name__ == "__main__":
     feldman = Feld({"api": False})
