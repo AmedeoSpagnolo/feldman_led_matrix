@@ -34,7 +34,8 @@ class Feld(SampleBase):
         self.prev_word = ""
         self.args = self.parser.parse_args()
         self.api = self.args.api
-        self.url = "http://" + self.args.ip[0] + ":" + self.args.port[0]
+        if self.api and self.args.ip and self.args.port:
+            self.url = "http://" + self.args.ip[0] + ":" + self.args.port[0]
 
     def print_word(self, word, canvas):
 
