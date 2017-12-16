@@ -93,6 +93,19 @@ alternative:
 		# Pillow
 		python -m pip install Pillow
 
+		<!-- rgbmatrix -->
+		cd ~/feldman_led_matrix/rpi-rgb-led-matrix-master/bindings/python && python setup.py install
+
+		sudo apt-get update
+		sudo aptitude install libgraphicsmagick++-dev libwebp-dev
+		sudo apt-get install libgraphicsmagick++-dev libwebp-dev -y
+		sudo apt-get install libwebp-dev
+		sudo apt-get install python2.7-dev python-pillow -y
+
+		pip install Cython
+
+		disable sound ?????
+
 ## Wiring
 
 Follow the [instuction](http://google.com) for wiring the led Screen
