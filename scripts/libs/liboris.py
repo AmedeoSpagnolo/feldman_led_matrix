@@ -5,9 +5,9 @@ import time
 import json
 
 class Feld(SampleBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, opt, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
-        print "opt"
+        print dir(self)
 
     def run(self):
         canvas = self.matrix.CreateFrameCanvas()
