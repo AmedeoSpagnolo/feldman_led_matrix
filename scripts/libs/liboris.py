@@ -7,6 +7,8 @@ import requests
 import threading
 import random
 
+print "liborid"
+
 class Feld(SampleBase):
     def __init__(self, opt, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
@@ -105,6 +107,7 @@ class Feld(SampleBase):
             return False
 
     def run(self):
+        print "run"
         if self.api:
             temp = self.get_word_from_api(self.url)
             word = temp if (temp and temp != None) else self.get_word_from_list(feldloop)
