@@ -17,12 +17,12 @@ class Feld(SampleBase):
             help="set False for Simple Loader")
         self.parser.add_argument(
             '--port',
-            nargs="1",
+            nargs=1,
             default=False,
             required=False)
         self.parser.add_argument(
             '--ip',
-            nargs="1",
+            nargs=1,
             default=False,
             required=False)
         self.blacklist   = json.load(open('assets/datasets/blacklist.json'))
