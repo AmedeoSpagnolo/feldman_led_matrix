@@ -105,7 +105,7 @@ class Feld(SampleBase):
             return False
 
     def get_word_from_list(self, arr):
-        return self.arr[random.randint(0,len(self.arr)-1)]
+        return arr[random.randint(0,len(arr)-1)]
 
     def get_word_from_api(self, url):
         try:
@@ -121,18 +121,14 @@ class Feld(SampleBase):
             return False
 
     def run(self):
-        print "%s" % self.api
         if self.api:
-            print "api"
             temp = self.get_word_from_api(self.url)
             word = temp if (temp and temp != None) else self.get_word_from_list(self.feldloop)
             self.print_word(word, self.matrix.CreateFrameCanvas())
             threading.Timer(2.0, self.run).start()
         else:
-            print "simple loader"
             count = 0
             while True:
-                print self.prev_word
                 time.sleep(2.0)
                 self.print_word(self.feldloop[count], self.matrix.CreateFrameCanvas())
                 count = (1 + count) % len(self.feldloop)
