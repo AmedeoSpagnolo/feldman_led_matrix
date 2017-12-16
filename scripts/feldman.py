@@ -121,7 +121,9 @@ class Feld(SampleBase):
             return False
 
     def run(self):
+        print "%s" % self.api
         if self.api:
+            print "api"
             temp = self.get_word_from_api(self.url)
             word = temp if (temp and temp != None) else self.get_word_from_list(self.feldloop)
             self.print_word(word, self.matrix.CreateFrameCanvas())
