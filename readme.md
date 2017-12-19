@@ -90,9 +90,6 @@ alternative:
 		cd /bindings/python
 		make
 
-		# Pillow
-		python -m pip install Pillow
-
 		<!-- rgbmatrix -->
 		cd ~/feldman_led_matrix/rpi-rgb-led-matrix-master/bindings/python && python setup.py install
 
@@ -102,21 +99,31 @@ alternative:
 		sudo apt-get install libwebp-dev
 		sudo apt-get install python2.7-dev python-pillow -y
 
+		?
+		python -m pip install Pillow
 		pip install Cython
 
-		disable sound ?????
+[disable integrated sound card](https://www.raspberrypi.org/forums/viewtopic.php?t=18573)
 
 ## Wiring
 
-Follow the [instuction](http://google.com) for wiring the led Screen
+Follow the [instuction](https://github.com/AmedeoSpagnolo/feldman_led_matrix/blob/master/wiring.md) for wiring the led Screen
 
 ## Run
 
 ### Simple Feldman loader
 
+		./loader
+
+###### alternative
+
 		cd ~/feldman_led_matrix/scripts/ && sudo python feldman_loader.py --led-rows=16 --led-chain=2
+
 
 ### Server Felman
 
-		boris server --led-chain=4 --led-rows=16
+		./matrix
+
+###### alternative
+
 		cd ~/feldman_led_matrix/scripts/ && sudo python feldman_server1.py --led-rows=16 --led-chain=2
