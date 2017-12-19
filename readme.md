@@ -108,6 +108,7 @@ alternative:
 ## Wiring
 
 Follow the [instuction](https://github.com/AmedeoSpagnolo/feldman_led_matrix/blob/master/wiring.md) for wiring the led Screen
+more [info](https://cdn-learn.adafruit.com/assets/assets/000/015/207/medium800/raspberry_pi_wiring_diagram.png?1394711938)
 
 ## Run
 
