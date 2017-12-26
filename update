@@ -1,0 +1,5 @@
+#!/bin/bash
+IP=192.168.50.181
+
+# If you have problems, probably $IP is not your raspberryPi's IP
+scp -i ~/.ssh/id_rsa scripts/feldman.py pi@$IP:~/feldman_led_matrix

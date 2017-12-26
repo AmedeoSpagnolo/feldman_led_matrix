@@ -1,3 +1,4 @@
 .DS_Store
 master.zip
 rpi-rgb-led-matrix-master/
+node_modules/

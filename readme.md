@@ -118,7 +118,7 @@ more [info](https://cdn-learn.adafruit.com/assets/assets/000/015/207/medium800/r
 
 ###### alternative
 
-		cd ~/feldman_led_matrix/scripts/ && sudo python feldman_loader.py --led-rows=16 --led-chain=2
+		cd ~/feldman_led_matrix/scripts/ && sudo python feldman_loader.py --boris --led-rows=16 --led-chain=2
 
 
 ### Server Felman
@@ -127,4 +127,10 @@ more [info](https://cdn-learn.adafruit.com/assets/assets/000/015/207/medium800/r
 
 ###### alternative
 
-		cd ~/feldman_led_matrix/scripts/ && sudo python feldman_server1.py --led-rows=16 --led-chain=2
+		cd ~/feldman_led_matrix/scripts/ && sudo python feldman_server1.py --boris --led-rows=16 --led-chain=2
+
+## Dev
+
+#### Automatic Update
+
+		gulp

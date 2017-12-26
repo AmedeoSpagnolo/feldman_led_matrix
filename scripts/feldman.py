@@ -12,6 +12,7 @@ import random
 class Feld(SampleBase):
     def __init__(self, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
+
         self.parser.add_argument(
             "-a",
             "--api",
@@ -27,13 +28,15 @@ class Feld(SampleBase):
             nargs=1,
             default=False,
             required=False)
+
         self.blacklist   = json.load(open('assets/datasets/blacklist.json'))
         self.feldloop    = json.load(open('assets/datasets/feldloop.json'))
         self.font        = graphics.Font()
         self.anim_time   = 15
-        self.prev_word = ""
-        self.args = self.parser.parse_args()
-        self.api = self.args.api
+        self.prev_word   = ""
+        self.args        = self.parser.parse_args()
+        self.api         = self.args.api
+
         if self.api and self.args.ip and self.args.port:
             self.url = "http://" + self.args.ip[0] + ":" + self.args.port[0]
 
@@ -122,17 +125,22 @@ class Feld(SampleBase):
             return False
 
     def run(self):
-        if self.api:
-            temp = self.get_word_from_api(self.url)
-            word = temp if (temp and temp != None) else self.get_word_from_list(self.feldloop)
-            self.print_word(word, self.matrix.CreateFrameCanvas())
-            threading.Timer(2.0, self.run).start()
+        print "run"
+        if self.boris:
+            # if self.api:
+            #     temp = self.get_word_from_api(self.url)
+            #     word = temp if (temp and temp != None) else self.get_word_from_list(self.feldloop)
+            #     self.print_word(word, self.matrix.CreateFrameCanvas())
+            #     threading.Timer(2.0, self.run).start()
+            # else:
+            #     count = 0
+            #     while True:
+            #         time.sleep(2.0)
+            #         self.print_word(self.feldloop[count], self.matrix.CreateFrameCanvas())
+            #         count = (1 + count) % len(self.feldloop)
+            print "boris"
         else:
-            count = 0
-            while True:
-                time.sleep(2.0)
-                self.print_word(self.feldloop[count], self.matrix.CreateFrameCanvas())
-                count = (1 + count) % len(self.feldloop)
+            print "noboris"
 
 # Main function
 if __name__ == "__main__":
