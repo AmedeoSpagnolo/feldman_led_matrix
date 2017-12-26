@@ -14,10 +14,13 @@ class Feld(SampleBase):
         super(Feld, self).__init__(*args, **kwargs)
 
         self.parser.add_argument(
-            "-a",
-            "--api",
+            "-a", "--api",
             action="store_true",
             help="get words from api")
+        self.parser.add_argument(
+            "--boris",
+            action="store_true",
+            help="boris script")
         self.parser.add_argument(
             '--port',
             nargs=1,
@@ -53,7 +56,7 @@ class Feld(SampleBase):
         word_length     = margin_bottom + ll("FELD" + word)
         prev_word_len   = margin_bottom + ll("FELD" + self.prev_word)
         steps           = self.anim_time
-        sign = 1 if (prev_word_len < word_length) else -1
+        sign            = 1 if (prev_word_len < word_length) else -1
 
         self.matrix.brightness = 50
         font.LoadFont("assets/fonts/4x6.bdf")
@@ -126,7 +129,8 @@ class Feld(SampleBase):
 
     def run(self):
         print "run"
-        if self.boris:
+        if self.args.boris:
+            
             # if self.api:
             #     temp = self.get_word_from_api(self.url)
             #     word = temp if (temp and temp != None) else self.get_word_from_list(self.feldloop)
