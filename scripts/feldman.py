@@ -27,6 +27,11 @@ class Feld(SampleBase):
             default=False,
             required=False)
         self.parser.add_argument(
+            '--write',
+            nargs=1,
+            default=False,
+            required=False)
+        self.parser.add_argument(
             '--ip',
             nargs=1,
             default=False,
@@ -128,23 +133,34 @@ class Feld(SampleBase):
             return False
 
     def run(self):
-        print "run"
         if self.args.boris:
-            
-            # if self.api:
-            #     temp = self.get_word_from_api(self.url)
-            #     word = temp if (temp and temp != None) else self.get_word_from_list(self.feldloop)
-            #     self.print_word(word, self.matrix.CreateFrameCanvas())
-            #     threading.Timer(2.0, self.run).start()
-            # else:
-            #     count = 0
-            #     while True:
-            #         time.sleep(2.0)
-            #         self.print_word(self.feldloop[count], self.matrix.CreateFrameCanvas())
-            #         count = (1 + count) % len(self.feldloop)
-            print "boris"
+            if self.api:
+                temp = self.get_word_from_api(self.url)
+                word = temp if (temp and temp != None) else self.get_word_from_list(self.feldloop)
+                self.print_word(word, self.matrix.CreateFrameCanvas())
+                threading.Timer(2.0, self.run).start()
+            else:
+                count = 0
+                while True:
+                    time.sleep(2.0)
+                    self.print_word(self.feldloop[count], self.matrix.CreateFrameCanvas())
+                    count = (1 + count) % len(self.feldloop)
+        elif self.args.write:
+
+            self.print_word(self.args.write, self.matrix.CreateFrameCanvas())
         else:
-            print "noboris"
+            font = graphics.Font()
+            font.LoadFont("assets/fonts/4x6.bdf")
+            print dir(self.matrix)
+            while True:
+                m = {
+                    "text":     "boris",
+                    "x0":       2,
+                    "y0":       self.matrix.height,
+                    "canvas":   self.matrix.CreateFrameCanvas(),
+                    "color":    graphics.Color(255,255,255)}
+                graphics.DrawText(m["canvas"], font, m["x0"], m["y0"], m["color"], m["text"])
+                m["canvas"] = self.matrix.SwapOnVSync(m["canvas"])
 
 # Main function
 if __name__ == "__main__":
