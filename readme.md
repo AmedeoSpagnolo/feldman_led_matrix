@@ -75,12 +75,11 @@ alternative:
 
 1) On RaspberryPi download github repositorie
 
-		cd && git clone https://github.com/AmedeoSpagnolo/feldman_led_matrix.git
-		cd feldman_led_matrix
+		# # INSTALL GIT
 
-9) Setup
+		# sudo apt-get install libcurl4-openssl-dev
+		# sudo apt-get install python-virtualenv python-dev libcurl4-gnutls-dev
 
-##### INSTALL GIT
 		# sudo apt-get install gettext
 		# wget https://www.kernel.org/pub/software/scm/git/git-2.3.0.tar.xz
 		# tar -xvf git-2.3.0.tar.xz
@@ -89,7 +88,13 @@ alternative:
 		# make
 		# sudo make install
 		# git --version
-		# sudo apt-get install libcurl4-openssl-dev
+		cd && git clone https://github.com/AmedeoSpagnolo/feldman_led_matrix.git
+		cd feldman_led_matrix
+
+		sudo locale-gen "en_US.UTF-8"
+		sudo dpkg-reconfigure locales
+
+9) Setup
 
 		# install python library rgbmatrix
 		cd ~/feldman_led_matrix
@@ -100,11 +105,13 @@ alternative:
 		make
 		cd /bindings/python
 		make
+		make install
 
 		<!-- rgbmatrix -->
 		cd ~/feldman_led_matrix/rpi-rgb-led-matrix-master/bindings/python && python setup.py install
 
 		sudo apt-get update
+		sudo apt-get upgrade
 		sudo aptitude install libgraphicsmagick++-dev libwebp-dev
 		sudo apt-get install libgraphicsmagick++-dev libwebp-dev -y
 		sudo apt-get install libwebp-dev
@@ -113,6 +120,8 @@ alternative:
 		sudo apt-get install python-pip
 		python -m pip install Pillow
 		# pip install Cython
+
+		sudo pip install requests
 
 [disable integrated sound card](https://www.raspberrypi.org/forums/viewtopic.php?t=18573)
 		# sudo leafpad /etc/modprobe.d/alsa-base.conf
