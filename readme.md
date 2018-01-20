@@ -80,6 +80,17 @@ alternative:
 
 9) Setup
 
+##### INSTALL GIT
+		# sudo apt-get install gettext
+		# wget https://www.kernel.org/pub/software/scm/git/git-2.3.0.tar.xz
+		# tar -xvf git-2.3.0.tar.xz
+		# cd git-2.3.0/
+		# ./configure --prefix=/usr --with-gitconfig=/etc/gitconfig
+		# make
+		# sudo make install
+		# git --version
+		# sudo apt-get install libcurl4-openssl-dev
+
 		# install python library rgbmatrix
 		cd ~/feldman_led_matrix
 		wget https://github.com/hzeller/rpi-rgb-led-matrix/archive/master.zip
@@ -99,11 +110,13 @@ alternative:
 		sudo apt-get install libwebp-dev
 		sudo apt-get install python2.7-dev python-pillow -y
 
-		?
+		sudo apt-get install python-pip
 		python -m pip install Pillow
-		pip install Cython
+		# pip install Cython
 
 [disable integrated sound card](https://www.raspberrypi.org/forums/viewtopic.php?t=18573)
+		# sudo leafpad /etc/modprobe.d/alsa-base.conf
+		# # comment the line options snd-usb-audio index=-2
 
 ## Wiring
 
