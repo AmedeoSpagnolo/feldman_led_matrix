@@ -162,7 +162,7 @@ class Feld(SampleBase):
 
                 if __name__ == '__main__':
                     app = socketio.Middleware(sio, app) # wrap Flask application with engineio's middleware
-                    eventlet.wsgi.server(eventlet.listen(('', self.args.port)), app) # deploy as an eventlet WSGI server
+                    eventlet.wsgi.server(eventlet.listen(('', int(self.args.port))), app) # deploy as an eventlet WSGI server
 
             else:
                 count = 0
