@@ -9,6 +9,11 @@ import requests
 import threading
 import random
 
+import socketio
+import eventlet
+import eventlet.wsgi
+from flask import Flask, render_template
+
 class Feld(SampleBase):
     def __init__(self, *args, **kwargs):
         super(Feld, self).__init__(*args, **kwargs)
@@ -17,6 +22,10 @@ class Feld(SampleBase):
             "-a", "--api",
             action="store_true",
             help="get words from api")
+        self.parser.add_argument(
+            "-s", "--socket",
+            action="store_true",
+            help="get words from socket")
         self.parser.add_argument(
             "--boris",
             action="store_true",
@@ -44,6 +53,7 @@ class Feld(SampleBase):
         self.prev_word   = ""
         self.args        = self.parser.parse_args()
         self.api         = self.args.api
+        self.socket         = self.args.socket
 
         if self.api and self.args.ip and self.args.port:
             self.url = "http://" + self.args.ip[0] + ":" + self.args.port[0]
@@ -139,6 +149,20 @@ class Feld(SampleBase):
                 word = temp if (temp and temp != None) else self.get_word_from_list(self.feldloop)
                 self.print_word(word, self.matrix.CreateFrameCanvas())
                 threading.Timer(2.0, self.run).start()
+            elif self.socket:
+                # do something
+                sio = socketio.Server()
+                app = Flask(__name__)
+
+                @sio.on('news')
+                def message(sid, data):
+                    print "data: %s" % data
+                    sio.emit('reply', "received: %s" % data)
+                    self.print_word(data, self.matrix.CreateFrameCanvas())
+
+                app = socketio.Middleware(sio, app) # wrap Flask application with engineio's middleware
+                eventlet.wsgi.server(eventlet.listen(('', self.args.port)), app) # deploy as an eventlet WSGI server
+
             else:
                 count = 0
                 while True:
