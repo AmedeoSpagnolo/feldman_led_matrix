@@ -10,48 +10,24 @@
   <form>
     <input id="m" type="text" name="inp" value="">
     <input type="submit" value="submit" onclick="socket.connect()" />
-    <p id="response">response</p>
   </form>
-
 
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
   <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
   <script type="text/javascript">
 
-      var port = 12346
-      // var host = "10.129.22.8"
-      var host = "0.0.0.0"
+      var port = 12345
+      var host = "0.0.0.0" // var host = "10.129.22.8"
       var url  = 'ws://' + host + ':' + port + '/'
 
       var socket = io(url)
 
       $('form').submit(function(){
         var mex = $('#m').val().trim()
-        $('#m').val("")
-        console.log(mex)
-      //   socket.emit(mex);
+        $('#m').val('')
+        socket.emit('news', mex);
         return false;
       });
-      //
-      // socket.on('connect', function(){
-      //   // console.log("asd")
-      //   socket.emit('setUser');
-      //   // socket.emit('setUser', $('.usernameInput').val().trim());
-      // });
-
-
-      // socket.on('chatMessage', function(msg){
-      //   $('#messages').append($('<li>').text(msg));
-      // });
-      // socket.on('newUser', function(data){
-      //   $('#newUserMessage').text(data);
-      // });
-      // socket.on('event', function(data){
-      //   console.log("event")
-      // })
-      // socket.on('disconnect', function(){
-      //   console.log("disconnect")
-      // })
 
   </script>
 </body>
