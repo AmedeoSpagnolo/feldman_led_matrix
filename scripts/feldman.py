@@ -160,9 +160,9 @@ class Feld(SampleBase):
                     sio.emit('reply', "received: %s" % data)
                     self.print_word(data, self.matrix.CreateFrameCanvas())
 
-                # if __name__ == '__main__':
-                #     app = socketio.Middleware(sio, app) # wrap Flask application with engineio's middleware
-                #     eventlet.wsgi.server(eventlet.listen(('', self.args.port)), app) # deploy as an eventlet WSGI server
+                if __name__ == '__main__':
+                    app = socketio.Middleware(sio, app) # wrap Flask application with engineio's middleware
+                    eventlet.wsgi.server(eventlet.listen(('', self.args.port)), app) # deploy as an eventlet WSGI server
 
             else:
                 count = 0
