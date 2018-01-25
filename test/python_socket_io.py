@@ -6,25 +6,10 @@ from flask import Flask, render_template
 sio = socketio.Server()
 app = Flask(__name__)
 
-# @app.route('/')
-# def index():
-#     """Serve the client-side application."""
-#     return "sdf"
-#     return render_template('index.html')
-#
-# @sio.on('connect', namespace='/chat')
-# def connect(sid, environ):
-#     print("connect ", sid)
-
 @sio.on('news')
 def message(sid, data):
-    print data
-    # print("message ", data)
-    # sio.emit('reply', room=sid)
-
-# @sio.on('disconnect', namespace='/chat')
-# def disconnect(sid):
-#     print('disconnect ', sid)
+    print "data: %s" % data
+    sio.emit('reply', "received: %s" % data)
 
 if __name__ == '__main__':
     # wrap Flask application with engineio's middleware

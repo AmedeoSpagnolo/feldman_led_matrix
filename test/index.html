@@ -10,6 +10,7 @@
   <form>
     <input id="m" type="text" name="inp" value="">
     <input type="submit" value="submit" onclick="socket.connect()" />
+    <p id="reply"></p>
   </form>
 
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -28,6 +29,11 @@
         socket.emit('news', mex);
         return false;
       });
+
+      socket.on("reply", function (msg) {
+        console.log(msg)
+        $("#reply").text(msg)
+      })
 
   </script>
 </body>
