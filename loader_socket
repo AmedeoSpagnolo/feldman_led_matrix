@@ -1,2 +1,0 @@
-#!/bin/bash
-cd ~/feldman_led_matrix/scripts && sudo python feldman.py --boris --socket --port=12345 --ip=10.200.200.210 --led-chain=2 --led-rows=16

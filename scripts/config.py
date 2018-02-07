@@ -10,3 +10,17 @@ BRIGHTNESS = 50
 
 MARGIN_TOP = 0
 MARGIN_LEFT = 0
+
+LOOP = [
+  "man",
+  "design",
+  "branding",
+  "advertising",
+  "typography",
+  "photography",
+  "illustration",
+  "editorial",
+  "video",
+  "print",
+  "web"
+]

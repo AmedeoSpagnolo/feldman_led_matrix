@@ -1,0 +1,2 @@
+#!/bin/bash
+cd ~/feldman_led_matrix/scripts && sudo python main.py --prefix FELD --socket --port=12345 --ip=pipeter.asuscomm,com --led-chain=2 --led-rows=16
