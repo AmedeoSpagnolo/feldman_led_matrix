@@ -1,14 +1,10 @@
-# stampa sempre feld anche se è vuoto
-
-        self.prev_word   = ""
-
-    def print_word(self, word, canvas, prefix):
+    def print_word(self, word, canvas, prefix, prev_word):
 
         def ll(string):
             return sum([font.CharacterWidth(ord(c)) for c in string])
 
         c   = 0
-        font    = self.font
+        font    = FONT
 
         margin_bottom   = 2
         margin_top      = self.matrix.height - 8
@@ -16,7 +12,7 @@
         prev_word_len   = margin_bottom + ll("FELD" + self.prev_word)
         sign            = 1 if (prev_word_len < word_length) else -1
 
-        self.matrix.brightness = 50
+        self.matrix.brightness = BRIGHTNESS
         font.LoadFont("assets/fonts/4x6.bdf")
 
         while (c < ANIM_TIME):
