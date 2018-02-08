@@ -55,10 +55,10 @@ class Feld(SampleBase):
         self.args = self.parser.parse_args()
 
     def run(self):
-
+        print "run"
         # start
-        w = self.args.word if self.args.word else "start"
-        print_word(w, self.matrix.CreateFrameCanvas(), self.args.prefix, self.prev_word)
+        w = self.args.word[0] if self.args.word else "start"
+        # print_word(w, self.matrix.CreateFrameCanvas(), self.args.prefix, self.prev_word)
         print "[*] starting..."
         print "data: %s\n" % (w)
 
@@ -69,7 +69,7 @@ class Feld(SampleBase):
             while True:
                 time.sleep(2.0)
                 print "data: %s" % (FELD_LOOP[count])
-                print_word(FELD_LOOP[count], self.matrix.CreateFrameCanvas(), self.args.prefix, self.prev_word)
+                # print_word(FELD_LOOP[count], self.matrix.CreateFrameCanvas(), self.args.prefix, self.prev_word)
                 count = (1 + count) % len(FELD_LOOP)
 
         # only socket
@@ -82,11 +82,15 @@ class Feld(SampleBase):
             def message(sid, data):
                 print "data: %s" % data
                 sio.emit('reply', "received: %s" % data)
-                print_word(data, self.matrix.CreateFrameCanvas(), self.args.prefix, self.prev_word)
+                # print_word(data, self.matrix.CreateFrameCanvas(), self.args.prefix, self.prev_word)
 
-            app = socketio.Middleware(sio, app) # wrap Flask application with engineio's middleware
-            eventlet.wsgi.server(eventlet.listen(('', int(self.args.port[0]))), app) # deploy as an eventlet WSGI server
+            # wrap Flask application with engineio's middleware
+            app = socketio.Middleware(sio, app)
+
+            # deploy as an eventlet WSGI server
+            eventlet.wsgi.server(eventlet.listen(('', int(self.args.port[0]))), app)
 
 # Main function
 if __name__ == "__main__":
     feldman = Feld()
+    feldman.run()
