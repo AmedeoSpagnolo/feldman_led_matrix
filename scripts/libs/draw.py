@@ -1,21 +1,62 @@
-from rgbmatrix import graphics
-from ..config import *
+from rgbmatrix import graphics, RGBMatrixOptions, RGBMatrix
+from config import *
 
-font = FONT
-font.LoadFont("../fonts/4x6.bdf")
+FONT.LoadFont("fonts/4x6.bdf")
 
-# print dir(self.matrix)
-# while True:
-#     m = {
-#         "text":     "boris",
-#         "x0":       2,
-#         "y0":       self.matrix.height,
-#         "canvas":   self.matrix.CreateFrameCanvas(),
-#         "color":    graphics.Color(255,255,255)}
-#     graphics.DrawText(m["canvas"], font, m["x0"], m["y0"], m["color"], m["text"])
-#     m["canvas"] = self.matrix.SwapOnVSync(m["canvas"])
-#
-#
+def canvas_init(arg):
+
+    options = RGBMatrixOptions()
+
+    if arg.led_gpio_mapping != None:
+      options.hardware_mapping = arg.led_gpio_mapping
+    options.rows = arg.led_rows
+    options.chain_length = arg.led_chain
+    options.parallel = arg.led_parallel
+    options.pwm_bits = arg.led_pwm_bits
+    options.brightness = arg.led_brightness
+    options.pwm_lsb_nanoseconds = arg.led_pwm_lsb_nanoseconds
+    options.led_rgb_sequence = arg.led_rgb_sequence
+    if arg.led_show_refresh:
+      options.show_refresh_rate = 1
+
+    if arg.led_slowdown_gpio != None:
+        options.gpio_slowdown = arg.led_slowdown_gpio
+    if arg.led_no_hardware_pulse:
+      options.disable_hardware_pulsing = True
+
+    return RGBMatrix(options = options)
+
+def print_word(word, canvas):
+        print "canvas"
+        print dir(canvas)
+        print "canvas.CreateFrameCanvas()"
+        print dir(canvas.CreateFrameCanvas())
+        canvas.Fill(255,255,255)
+        c = canvas.CreateFrameCanvas()
+    # while True:
+        m = {
+            "text":     word,
+            "x0":       2,
+            "y0":       HEIGHT,
+            "color":    MAIN_COLOR}
+        l = {
+            "x0": 10,
+            "y0": 3,
+            "x1": 20,
+            "y1": 3,
+            "color": MAIN_COLOR}
+        # graphics.DrawText(c, FONT, m["x0"], m["y0"], m["color"], m["text"])
+        graphics.DrawLine(c, l["x0"], l["y0"], l["x1"], l["y1"], l["color"])
+
+
+        # print "dir(canvas)"
+        # print dir(canvas)
+        # canvas.SwapOnVSync(canvas)
+
+        # return False
+
+
+
 
 
 #

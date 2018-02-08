@@ -9,6 +9,7 @@ BRIGHTNESS = 50
 MARGIN_TOP = 0
 MARGIN_LEFT = 0
 
+HEIGHT = 16
 
 FELD_LOOP = [
   "man",
