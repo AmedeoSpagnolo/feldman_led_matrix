@@ -27,17 +27,41 @@
 
 		sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 
-		# content:
+			# content:
+			country=GB
+			ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+			update_config=1
 
-		country=GB
-		ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-		update_config=1
+			network={
+	        	ssid="<SSID_name>"
+	        	scan_ssid=1
+	        	psk="<password>"
+			}
 
-		network={
-        	ssid="<SSID_name>"
-        	scan_ssid=1
-        	psk="<password>"
-		}
+		sudo nano /etc/network/interfaces
+
+			# content
+			auto lo
+			iface lo inet loopback
+
+			auto eth0
+			iface eth0 inet dhcp
+
+			auto wlan0
+			allow-hotplug wlan0
+			iface wlan0 inet dhcp
+			wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+			iface default inet dhcp
+
+
+			sudo systemctl start dhcpcd
+			sudo service dhcpcd restart
+			systemctl daemon-reload
+			systemctl status dhcpcd.service
+
+			sudo dhcpcd -q -d
+
+			wpa_passphrase MYSSID passphrase
 
 8) run:
 
@@ -156,6 +180,5 @@ more [info](https://cdn-learn.adafruit.com/assets/assets/000/015/207/medium800/r
 #### Automatic Update
 
 		gulp
-
 
 https://raspberrypi.stackexchange.com/questions/6757/how-to-use-ssh-out-of-home-network

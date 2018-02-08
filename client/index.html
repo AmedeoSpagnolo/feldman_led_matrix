@@ -17,9 +17,22 @@
   <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
   <script type="text/javascript">
 
-      var port = 12345
-      var host = "10.200.200.210" // var host = "10.129.22.8"
-      var url  = 'ws://' + host + ':' + port + '/'
+      var lab = {
+        "port": 12345,
+        "host": "10.200.200.210"
+      }
+
+      var hk = {
+        "port": 54,
+        "host": "116.48.170.226" // pipeter.asuscomm.com
+      }
+
+      var fr = {
+        "port": 12345,
+        "host": "feldmanstudio.ddns.net"
+      }
+
+      var url  = 'ws://' + fr["host"] + ':' + fr["port"] + '/'
 
       var socket = io(url)
 

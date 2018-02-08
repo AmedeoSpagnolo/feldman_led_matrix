@@ -1,2 +1,0 @@
-#!/bin/bash
-cd ~/feldman_led_matrix/scripts && sudo python feldman.py --boris --led-chain=2 --led-rows=16
