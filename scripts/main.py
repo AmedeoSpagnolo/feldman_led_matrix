@@ -132,10 +132,10 @@ class Feld():
             print("Exiting\n")
             sys.exit(0)
 
-    def run(self):
+    def printword(self, word, duration):
+        print_word(word, self.canvas, duration)
 
-        # print_word("asd", self.canvas)
-        # canvas.SwapOnVSync(canvas)
+    def run(self):
 
         # start
         w = self.args.word[0] if self.args.word else "start"
@@ -143,6 +143,7 @@ class Feld():
         print "[*] starting..."
         print "Press CTRL-C to stop sample"
         print "data: %s\n" % (w)
+        self.printword(w, 5)
 
         # only loader
         if self.args.loader:
