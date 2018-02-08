@@ -5,8 +5,9 @@ sys.path.append(sys.path[0])
 
 from libs.samplebase import SampleBase
 from libs.blacklist import *
+from libs.config import *
+from libs.draw import *
 
-from config import *
 
 import time
 import requests
@@ -55,7 +56,7 @@ class Feld(SampleBase):
         self.args = self.parser.parse_args()
 
     def run(self):
-        print "run"
+
         # start
         w = self.args.word[0] if self.args.word else "start"
         # print_word(w, self.matrix.CreateFrameCanvas(), self.args.prefix, self.prev_word)

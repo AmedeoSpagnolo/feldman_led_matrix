@@ -4,5 +4,5 @@ IP=10.200.200.209
 
 # If you have problems, probably $IP is not your raspberryPi's IP
 scp -i ~/.ssh/id_rsa scripts/main.py pi@$IP:~/feldman_led_matrix/scripts/main.py;
-scp -i ~/.ssh/id_rsa scripts/config.py pi@$IP:~/feldman_led_matrix/scripts/config.py;
+scp -i ~/.ssh/id_rsa scripts/libs/config.py pi@$IP:~/feldman_led_matrix/scripts/libs/config.py;
 scp -i ~/.ssh/id_rsa scripts/libs/draw.py pi@$IP:~/feldman_led_matrix/scripts/libs/draw.py
