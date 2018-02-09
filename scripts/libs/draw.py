@@ -3,7 +3,7 @@ from config import *
 
 FONT.LoadFont("fonts/4x6.bdf")
 
-
+# todo
 def canvas_init(arg):
     options = RGBMatrixOptions()
     if arg.led_gpio_mapping != None:
