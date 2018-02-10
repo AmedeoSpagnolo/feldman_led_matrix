@@ -24,3 +24,5 @@ FELD_LOOP = [
   "print",
   "web"
 ]
+
+FONT.LoadFont("libs/fonts/4x6.bdf")

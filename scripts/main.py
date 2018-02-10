@@ -5,6 +5,8 @@ import os
 sys.path.append(sys.path[0])
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/..'))
 
+from rgbmatrix import graphics, RGBMatrixOptions, RGBMatrix
+
 from libs.blacklist import *
 from libs.config import *
 
@@ -132,7 +134,7 @@ class Feld():
             sys.exit(0)
 
     # todo
-    def canvas_init(arg):
+    def canvas_init(self, arg):
         options = RGBMatrixOptions()
         if arg.led_gpio_mapping != None:
           options.hardware_mapping = arg.led_gpio_mapping
@@ -153,17 +155,6 @@ class Feld():
 
     def run(self):
 
-<<<<<<< HEAD
-        c = self.canvas.CreateFrameCanvas()
-
-        # start
-        w = self.args.word[0] if self.args.word else "start"
-        # print_word(w, self.matrix.CreateFrameCanvas(), self.args.prefix, self.prev_word)
-        print "[*] starting..."
-        print "Press CTRL-C to stop sample"
-        print "data: %s\n" % (w)
-        self.printword(w, 15)
-=======
         print "[*] starting..."
         print "Press CTRL-C to stop"
 
@@ -178,8 +169,7 @@ class Feld():
                 offscreen_canvas.Clear()
                 graphics.DrawText(offscreen_canvas, FONT, 10, 10, MAIN_COLOR, w)
                 time.sleep(0.05)
-                offscreen_canvas = self.matrix.SwapOnVSync(offscreen_canvas)
->>>>>>> 81b664d5849051e9ca1d24d8515182ebf5299f4b
+                offscreen_canvas = self.canvas.SwapOnVSync(offscreen_canvas)
 
         # [*] MODE
         # only loader
@@ -189,11 +179,11 @@ class Feld():
             while True:
                 w = FELD_LOOP[count]
                 print "data: %s" % (w)
-                offscreen_canvas.Clear()
-                graphics.DrawText(offscreen_canvas, FONT, 10, 10, MAIN_COLOR, w)
-                time.sleep(0.05)
+                self.offscreen_canvas.Clear()
+                graphics.DrawText(self.offscreen_canvas, FONT, 10, 10, MAIN_COLOR, w)
+                time.sleep(2)
                 count = (1 + count) % len(FELD_LOOP)
-                offscreen_canvas = self.matrix.SwapOnVSync(offscreen_canvas)
+                self.offscreen_canvas = self.canvas.SwapOnVSync(self.offscreen_canvas)
 
         # [*] MODE
         # only socket
@@ -213,7 +203,6 @@ class Feld():
 
             # deploy as an eventlet WSGI server
             eventlet.wsgi.server(eventlet.listen(('', int(self.args.port[0]))), app)
-
 
 # Main function
 if __name__ == "__main__":

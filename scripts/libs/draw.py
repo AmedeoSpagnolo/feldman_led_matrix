@@ -1,29 +1,27 @@
-from rgbmatrix import graphics, RGBMatrixOptions, RGBMatrix
-from config import *
+# from rgbmatrix import graphics, RGBMatrixOptions, RGBMatrix
+# from config import *
 
-FONT.LoadFont("libs/fonts/4x6.bdf")
-
-def canvas_init(arg):
-    options = RGBMatrixOptions()
-    if arg.led_gpio_mapping != None:
-      options.hardware_mapping = arg.led_gpio_mapping
-    options.rows = arg.led_rows
-    options.chain_length = arg.led_chain
-    options.parallel = arg.led_parallel
-    options.pwm_bits = arg.led_pwm_bits
-    options.brightness = arg.led_brightness
-    options.pwm_lsb_nanoseconds = arg.led_pwm_lsb_nanoseconds
-    options.led_rgb_sequence = arg.led_rgb_sequence
-    if arg.led_show_refresh:
-      options.show_refresh_rate = 1
-    if arg.led_slowdown_gpio != None:
-        options.gpio_slowdown = arg.led_slowdown_gpio
-    if arg.led_no_hardware_pulse:
-      options.disable_hardware_pulsing = True
-    return RGBMatrix(options = options)
-
-def usleep(self, value):
-    time.sleep(value / 1000000.0)
+# def canvas_init(arg):
+#     options = RGBMatrixOptions()
+#     if arg.led_gpio_mapping != None:
+#       options.hardware_mapping = arg.led_gpio_mapping
+#     options.rows = arg.led_rows
+#     options.chain_length = arg.led_chain
+#     options.parallel = arg.led_parallel
+#     options.pwm_bits = arg.led_pwm_bits
+#     options.brightness = arg.led_brightness
+#     options.pwm_lsb_nanoseconds = arg.led_pwm_lsb_nanoseconds
+#     options.led_rgb_sequence = arg.led_rgb_sequence
+#     if arg.led_show_refresh:
+#       options.show_refresh_rate = 1
+#     if arg.led_slowdown_gpio != None:
+#         options.gpio_slowdown = arg.led_slowdown_gpio
+#     if arg.led_no_hardware_pulse:
+#       options.disable_hardware_pulsing = True
+#     return RGBMatrix(options = options)
+#
+# def usleep(self, value):
+#     time.sleep(value / 1000000.0)
 
 def print_line(canvas):
     while True:
