@@ -153,23 +153,28 @@ class Feld():
           options.disable_hardware_pulsing = True
         return RGBMatrix(options = options)
 
+    def ll(self, string):
+        return sum([FONT.CharacterWidth(ord(c)) for c in string])
+
     def drawtext(self, word, opt = {}):
         op = {
             'font': FONT,
             'anim': False,
             'anim_time': ANIMATION_TIME,
+            'prefix': False,
             'color': MAIN_COLOR,
             'x': 10, 'y': 10}
         op.update(opt)
         count = op['anim_time'] if op['anim'] else 1
+        pref_shift = self.ll(op['prefix']) if op['prefix'] else 0
         while count > 0:
             self.offscreen_canvas.Clear()
-            shift = int(float(SHIFT) / op['anim_time'] * count)
-            # print shift
-            graphics.DrawText(self.offscreen_canvas, op['font'], op['x'], op['y'] - shift, op['color'], word)
+            anim_shift = int(float(SHIFT) / op['anim_time'] * count)
+            graphics.DrawText(self.offscreen_canvas, op['font'], pref_shift, op['y'] - anim_shift, op['color'], word)
+            graphics.DrawText(self.offscreen_canvas, op['font'], 0, op['y'], op['color'], op['prefix'])
             self.offscreen_canvas = self.canvas.SwapOnVSync(self.offscreen_canvas)
-            count -= 1
             time.sleep(0.01)
+            count -= 1
 
     def run(self):
         print "[*] starting..."
@@ -193,7 +198,7 @@ class Feld():
             while True:
                 w = FELD_LOOP[count]
                 print "data: %s" % (w)
-                self.drawtext(w, {'anim': True})
+                self.drawtext(w, {'anim': True, 'prefix': 'FELD'})
                 count = (1 + count) % len(FELD_LOOP)
                 time.sleep(2)
 
