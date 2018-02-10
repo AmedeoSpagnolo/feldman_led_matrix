@@ -3,13 +3,14 @@ from rgbmatrix import graphics
 FONT = graphics.Font()
 MAIN_COLOR = graphics.Color(255,255,255)
 
+HEIGHT = 16
+
 ANIM_TIME = 15
 BRIGHTNESS = 50
 
-MARGIN_TOP = 0
-MARGIN_LEFT = 0
+MARGIN_LEFT = 1
+MARGIN_TOP = 11
 
-HEIGHT = 16
 
 FELD_LOOP = [
   "man",

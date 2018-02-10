@@ -126,6 +126,8 @@ class Feld():
         self.args = self.parser.parse_args()
         self.canvas = self.canvas_init(self.args)
         self.offscreen_canvas = self.canvas.CreateFrameCanvas()
+        self.word = ''
+        self.prev = ''
 
         try:
             self.run()
@@ -158,20 +160,27 @@ class Feld():
 
     def drawtext(self, word, opt = {}):
         op = {
+            'x': MARGIN_LEFT,
+            'y': MARGIN_TOP,
             'font': FONT,
-            'anim': False,
+            'anim': True,
             'anim_time': ANIMATION_TIME,
-            'prefix': False,
-            'color': MAIN_COLOR,
-            'x': 10, 'y': 10}
+            'outline': True,
+            'prefix': "FELD",
+            'color': MAIN_COLOR}
         op.update(opt)
         count = op['anim_time'] if op['anim'] else 1
         pref_shift = self.ll(op['prefix']) if op['prefix'] else 0
+        delta_words = self.word - self.prev
         while count > 0:
             self.offscreen_canvas.Clear()
             anim_shift = int(float(SHIFT) / op['anim_time'] * count)
-            graphics.DrawText(self.offscreen_canvas, op['font'], pref_shift, op['y'] - anim_shift, op['color'], word)
-            graphics.DrawText(self.offscreen_canvas, op['font'], 0, op['y'], op['color'], op['prefix'])
+            # anim_line = int((float(abs(prev_word_len - word_length)) / ANIM_TIME) * (ANIM_TIME - c))
+            graphics.DrawText(self.offscreen_canvas, op['font'], pref_shift + op['x'], op['y'] - anim_shift, op['color'], word + '.')
+            if op['prefix']:
+                graphics.DrawText(self.offscreen_canvas, op['font'], op['x'], op['y'], op['color'], op['prefix'])
+            if op['outline']:
+                graphics.DrawLine(self.offscreen_canvas, pref_shift + op['x'], op['y'] + 1, pref_shift+self.ll(word), op['y'] + 1, op["color"])
             self.offscreen_canvas = self.canvas.SwapOnVSync(self.offscreen_canvas)
             time.sleep(0.01)
             count -= 1
@@ -184,10 +193,10 @@ class Feld():
         # single word
         if self.args.word:
             print "[*] MODE: single word"
-            w = self.args.word[0]
-            print "data: %s" % (w)
+            self.word = self.args.word[0]
+            print "data: %s" % (self.word)
             while True:
-                self.drawtext(w)
+                self.drawtext(self.word)
                 time.sleep(2)
 
         # [*] MODE
@@ -196,9 +205,10 @@ class Feld():
             print "[*] MODE: only loader"
             count = 0
             while True:
-                w = FELD_LOOP[count]
-                print "data: %s" % (w)
-                self.drawtext(w, {'anim': True, 'prefix': 'FELD'})
+                self.prev = self.word
+                self.word = FELD_LOOP[count]
+                print "data: %s" % (self.word)
+                self.drawtext(self.word)
                 count = (1 + count) % len(FELD_LOOP)
                 time.sleep(2)
 
@@ -213,11 +223,13 @@ class Feld():
             def message(sid, data):
                 print "data: %s" % data
                 sio.emit('reply', "received: %s" % data)
-                # print_word(data, self.matrix.CreateFrameCanvas(), self.args.prefix, self.prev_word)
+                if isblacklisted(data):
+                    self.prev = self.word
+                    self.word = data
+                    self.drawtext(self.word)
 
             # wrap Flask application with engineio's middleware
             app = socketio.Middleware(sio, app)
-
             # deploy as an eventlet WSGI server
             eventlet.wsgi.server(eventlet.listen(('', int(self.args.port[0]))), app)
 
