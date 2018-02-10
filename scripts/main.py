@@ -153,23 +153,37 @@ class Feld():
           options.disable_hardware_pulsing = True
         return RGBMatrix(options = options)
 
-    def run(self):
+    def drawtext(self, word, opt = {}):
+        op = {
+            'font': FONT,
+            'anim': False,
+            'anim_time': ANIMATION_TIME,
+            'color': MAIN_COLOR,
+            'x': 10, 'y': 10}
+        op.update(opt)
+        count = op['anim_time'] if op['anim'] else 1
+        while count > 0:
+            self.offscreen_canvas.Clear()
+            shift = int(float(SHIFT) / op['anim_time'] * count)
+            # print shift
+            graphics.DrawText(self.offscreen_canvas, op['font'], op['x'], op['y'] - shift, op['color'], word)
+            self.offscreen_canvas = self.canvas.SwapOnVSync(self.offscreen_canvas)
+            count -= 1
+            time.sleep(0.01)
 
+    def run(self):
         print "[*] starting..."
         print "Press CTRL-C to stop"
 
         # [*] MODE
         # single word
         if self.args.word:
-            w = self.args.word[0]
             print "[*] MODE: single word"
+            w = self.args.word[0]
             print "data: %s" % (w)
             while True:
-                w = FELD_LOOP[count]
-                offscreen_canvas.Clear()
-                graphics.DrawText(offscreen_canvas, FONT, 10, 10, MAIN_COLOR, w)
-                time.sleep(0.05)
-                offscreen_canvas = self.canvas.SwapOnVSync(offscreen_canvas)
+                self.drawtext(w)
+                time.sleep(2)
 
         # [*] MODE
         # only loader
@@ -179,11 +193,9 @@ class Feld():
             while True:
                 w = FELD_LOOP[count]
                 print "data: %s" % (w)
-                self.offscreen_canvas.Clear()
-                graphics.DrawText(self.offscreen_canvas, FONT, 10, 10, MAIN_COLOR, w)
-                time.sleep(2)
+                self.drawtext(w, {'anim': True})
                 count = (1 + count) % len(FELD_LOOP)
-                self.offscreen_canvas = self.canvas.SwapOnVSync(self.offscreen_canvas)
+                time.sleep(2)
 
         # [*] MODE
         # only socket

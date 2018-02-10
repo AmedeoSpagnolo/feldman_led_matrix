@@ -26,3 +26,6 @@ FELD_LOOP = [
 ]
 
 FONT.LoadFont("libs/fonts/4x6.bdf")
+
+ANIMATION_TIME = 10
+SHIFT = 5

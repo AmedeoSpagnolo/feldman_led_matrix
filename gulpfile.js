@@ -3,6 +3,6 @@ var gulp = require('gulp'),
    watch = require('gulp-watch');
 
 gulp.task('default', function () {
-    return watch(['scripts/main.py','scripts/config.py','scripts/libs/draw.py'])
+    return watch(['scripts/main.py','scripts/libs/config.py'])
         .pipe(shell(['./update']));
 });
