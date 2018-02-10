@@ -1,8 +1,7 @@
 from rgbmatrix import graphics, RGBMatrixOptions, RGBMatrix
 from config import *
 
-FONT.LoadFont("fonts/4x6.bdf")
-
+FONT.LoadFont("libs/fonts/4x6.bdf")
 
 def canvas_init(arg):
     options = RGBMatrixOptions()
@@ -23,6 +22,9 @@ def canvas_init(arg):
       options.disable_hardware_pulsing = True
     return RGBMatrix(options = options)
 
+def usleep(self, value):
+    time.sleep(value / 1000000.0)
+
 def print_line(canvas):
     while True:
         l = {
@@ -33,7 +35,8 @@ def print_line(canvas):
 
 def print_word(word, canvas, seconds):
     count = 0
-    while count < seconds * 50000:
+    while True:
+    # while count < seconds * 10000:
         canvas.Clear()
         m = {
             "text":     word,
@@ -46,7 +49,8 @@ def print_word(word, canvas, seconds):
             "y0":       5,
             "color":    MAIN_COLOR}
         graphics.DrawText(canvas, FONT, m["x0"], m["y0"], m["color"], m["text"])
-        count += 1
+        # canvas.SwapOnVSync(canvas)
+        # count += 1
 
 
 

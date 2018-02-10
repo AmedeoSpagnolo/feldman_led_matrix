@@ -108,7 +108,7 @@ class Feld():
         self.parser.add_argument(
             "--led-slowdown-gpio",
             action="store",
-            help="Slow down writing to GPIO. Range: 1..100. Default: 1",
+            help="Slow down writing to GPIO. Range: 1..3. Default: 1",
             choices=range(3),
             type=int)
         self.parser.add_argument(
@@ -137,13 +137,15 @@ class Feld():
 
     def run(self):
 
+        c = self.canvas.CreateFrameCanvas()
+
         # start
         w = self.args.word[0] if self.args.word else "start"
         # print_word(w, self.matrix.CreateFrameCanvas(), self.args.prefix, self.prev_word)
         print "[*] starting..."
         print "Press CTRL-C to stop sample"
         print "data: %s\n" % (w)
-        self.printword(w, 5)
+        self.printword(w, 15)
 
         # only loader
         if self.args.loader:
