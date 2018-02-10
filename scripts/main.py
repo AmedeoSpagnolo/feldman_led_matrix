@@ -7,7 +7,6 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/..'))
 
 from libs.blacklist import *
 from libs.config import *
-from libs.draw import *
 
 import argparse
 import time
@@ -123,20 +122,38 @@ class Feld():
             type=str)
 
         self.args = self.parser.parse_args()
-        self.canvas = canvas_init(self.args)
+        self.canvas = self.canvas_init(self.args)
+        self.offscreen_canvas = self.canvas.CreateFrameCanvas()
 
         try:
-            # Start loop
             self.run()
         except KeyboardInterrupt:
             print("Exiting\n")
             sys.exit(0)
 
-    def printword(self, word, duration):
-        print_word(word, self.canvas, duration)
+    # todo
+    def canvas_init(arg):
+        options = RGBMatrixOptions()
+        if arg.led_gpio_mapping != None:
+          options.hardware_mapping = arg.led_gpio_mapping
+        options.rows = arg.led_rows
+        options.chain_length = arg.led_chain
+        options.parallel = arg.led_parallel
+        options.pwm_bits = arg.led_pwm_bits
+        options.brightness = arg.led_brightness
+        options.pwm_lsb_nanoseconds = arg.led_pwm_lsb_nanoseconds
+        options.led_rgb_sequence = arg.led_rgb_sequence
+        if arg.led_show_refresh:
+          options.show_refresh_rate = 1
+        if arg.led_slowdown_gpio != None:
+            options.gpio_slowdown = arg.led_slowdown_gpio
+        if arg.led_no_hardware_pulse:
+          options.disable_hardware_pulsing = True
+        return RGBMatrix(options = options)
 
     def run(self):
 
+<<<<<<< HEAD
         c = self.canvas.CreateFrameCanvas()
 
         # start
@@ -146,17 +163,39 @@ class Feld():
         print "Press CTRL-C to stop sample"
         print "data: %s\n" % (w)
         self.printword(w, 15)
+=======
+        print "[*] starting..."
+        print "Press CTRL-C to stop"
 
+        # [*] MODE
+        # single word
+        if self.args.word:
+            w = self.args.word[0]
+            print "[*] MODE: single word"
+            print "data: %s" % (w)
+            while True:
+                w = FELD_LOOP[count]
+                offscreen_canvas.Clear()
+                graphics.DrawText(offscreen_canvas, FONT, 10, 10, MAIN_COLOR, w)
+                time.sleep(0.05)
+                offscreen_canvas = self.matrix.SwapOnVSync(offscreen_canvas)
+>>>>>>> 81b664d5849051e9ca1d24d8515182ebf5299f4b
+
+        # [*] MODE
         # only loader
         if self.args.loader:
             print "[*] MODE: only loader"
             count = 0
             while True:
-                time.sleep(2.0)
-                print "data: %s" % (FELD_LOOP[count])
-                # print_word(FELD_LOOP[count], self.matrix.CreateFrameCanvas(), self.args.prefix, self.prev_word)
+                w = FELD_LOOP[count]
+                print "data: %s" % (w)
+                offscreen_canvas.Clear()
+                graphics.DrawText(offscreen_canvas, FONT, 10, 10, MAIN_COLOR, w)
+                time.sleep(0.05)
                 count = (1 + count) % len(FELD_LOOP)
+                offscreen_canvas = self.matrix.SwapOnVSync(offscreen_canvas)
 
+        # [*] MODE
         # only socket
         if self.args.socket:
             print "[*] MODE: only socket"
