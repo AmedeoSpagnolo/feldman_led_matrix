@@ -122,10 +122,11 @@ class Feld():
             help="Switch if your matrix has led colors swapped. Default: RGB",
             default="RGB",
             type=str)
-
         self.args = self.parser.parse_args()
+
         self.canvas = self.canvas_init(self.args)
         self.offscreen_canvas = self.canvas.CreateFrameCanvas()
+
         self.word = ''
         self.prev = ''
 
@@ -170,7 +171,7 @@ class Feld():
             'anim': True,
             'anim_time': ANIMATION_TIME,
             'outline': True,
-            'prefix': "FELD",
+            'prefix': PREFIX,
             'suffix': ".",
             'color': MAIN_COLOR}
         op.update(opt)
