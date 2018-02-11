@@ -157,7 +157,8 @@ class Feld():
         return RGBMatrix(options = options)
 
     def ll(self, string):
-        return sum([FONT.CharacterWidth(ord(c)) for c in string])
+        spaces = len(string) * 3
+        return sum([FONT.CharacterWidth(ord(c)) for c in string]) + spaces
 
     def drawtext(self, word, opt = {}):
         self.prev = self.word
