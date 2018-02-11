@@ -1,5 +1,2 @@
 #!/bin/bash
-cd ~/feldman_led_matrix/scripts && sudo python main.py --prefix FELD --loader --led-chain=2 --led-rows=16
-
-# good
-# sudo python main.py --word init --led-brightness=60 --led-rows=16 --led-chain=2 --led-pwm-lsb-nanoseconds=50 --led-scan-mode=0 --led-pwm-bits=4 --led-slowdown-gpio=2
+cd ~/feldman_led_matrix/scripts && sudo python main.py --led-rows=16 --led-chain=2  --led-brightness=60 --led-pwm-lsb-nanoseconds=80 --led-slowdown-gpio=2 --led-scan-mode=1 --loader

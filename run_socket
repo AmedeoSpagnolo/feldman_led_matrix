@@ -1,0 +1,2 @@
+#!/bin/bash
+cd ~/feldman_led_matrix/scripts && sudo python main.py --led-rows=16 --led-chain=2  --led-brightness=60 --led-pwm-lsb-nanoseconds=80 --led-slowdown-gpio=2 --led-scan-mode=1 --socket --port=4444
