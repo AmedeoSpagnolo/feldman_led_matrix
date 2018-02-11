@@ -162,8 +162,6 @@ class Feld():
     def drawtext(self, word, opt = {}):
         self.prev = self.word
         self.word = word
-        print "prev: " + str(self.prev)
-        print "word: " + str(self.word)
         op = {
             'x': MARGIN_LEFT,
             'y': MARGIN_TOP,
