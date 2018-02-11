@@ -20,7 +20,8 @@ FELD_LOOP = [
   "web"
 ]
 
-FONT.LoadFont("libs/fonts/4x6.bdf")
+# FONT.LoadFont("libs/fonts/4x6.bdf")
+FONT.LoadFont("libs/fonts/converted.bdf")
 
 ANIMATION_TIME = 10
 SHIFT = 5
