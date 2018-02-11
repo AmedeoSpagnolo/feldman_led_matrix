@@ -32,7 +32,12 @@
         "host": "feldmanstudio.ddns.net"
       }
 
-      var url  = 'ws://' + lab["host"] + ':' + lab["port"] + '/'
+      var wan = {
+        "port": 4444,
+        "host": "192.168.50.181"
+      }
+
+      var url  = 'ws://' + wan["host"] + ':' + wan["port"] + '/'
 
       var socket = io(url)
 

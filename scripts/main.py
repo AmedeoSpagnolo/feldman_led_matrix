@@ -159,6 +159,10 @@ class Feld():
         return sum([FONT.CharacterWidth(ord(c)) for c in string])
 
     def drawtext(self, word, opt = {}):
+        self.prev = self.word
+        self.word = word
+        print "prev: " + str(self.prev)
+        print "word: " + str(self.word)
         op = {
             'x': MARGIN_LEFT,
             'y': MARGIN_TOP,
@@ -167,72 +171,84 @@ class Feld():
             'anim_time': ANIMATION_TIME,
             'outline': True,
             'prefix': "FELD",
+            'suffix': ".",
             'color': MAIN_COLOR}
         op.update(opt)
         count = op['anim_time'] if op['anim'] else 1
         pref_shift = self.ll(op['prefix']) if op['prefix'] else 0
-        delta_words = self.word - self.prev
+        delta_words = self.ll(self.word) - self.ll(self.prev)
         while count > 0:
             self.offscreen_canvas.Clear()
-            anim_shift = int(float(SHIFT) / op['anim_time'] * count)
-            # anim_line = int((float(abs(prev_word_len - word_length)) / ANIM_TIME) * (ANIM_TIME - c))
-            graphics.DrawText(self.offscreen_canvas, op['font'], pref_shift + op['x'], op['y'] - anim_shift, op['color'], word + '.')
+            anim_y_shift = int(float(SHIFT) / op['anim_time'] * count)
+            anim_ln_line = int(float(delta_words) / op['anim_time'] * count)
+            _x = pref_shift + op['x']
+            _y = op['y'] - anim_y_shift
+            graphics.DrawText(self.offscreen_canvas, op['font'], _x, _y, op['color'], word + op['suffix'])
             if op['prefix']:
                 graphics.DrawText(self.offscreen_canvas, op['font'], op['x'], op['y'], op['color'], op['prefix'])
             if op['outline']:
-                graphics.DrawLine(self.offscreen_canvas, pref_shift + op['x'], op['y'] + 1, pref_shift+self.ll(word), op['y'] + 1, op["color"])
+                __x1 = _x
+                __x2 = pref_shift + self.ll(word) + 2 - anim_ln_line
+                __y = op['y'] + 1
+                graphics.DrawLine(self.offscreen_canvas, __x1, __y, __x2, __y, op["color"])
             self.offscreen_canvas = self.canvas.SwapOnVSync(self.offscreen_canvas)
             time.sleep(0.01)
             count -= 1
+
+    def mode_single_word(self):
+        print "[*] MODE: Single word"
+        print "data: %s" % (self.args.word[0])
+        while True:
+            self.drawtext(self.args.word[0], {'anim': False})
+            time.sleep(2)
+
+    def mode_loader(self):
+        print "[*] MODE: Loader"
+        count = 0
+        while True:
+            print "data: %s" % (FELD_LOOP[count])
+            self.drawtext(FELD_LOOP[count])
+            count = (1 + count) % len(FELD_LOOP)
+            time.sleep(2)
+
+    def mode_socket(self):
+        print "[*] MODE: Socket"
+        sio = socketio.Server()
+        app = Flask(__name__)
+        self.drawtext("", {'suffix': '', 'anim': False, 'outline': False})
+
+        @sio.on('news')
+        def message(sid, data):
+            print "data: %s" % data
+            sio.emit('reply', "received: %s" % data)
+            if not isblacklisted(data):
+                self.drawtext(data)
+                # todo : animation slow
+            else:
+                print dir(sio)
+                print "received banned word: %s from %s" % (data, sid)
+
+        # wrap Flask application with engineio's middleware
+        app = socketio.Middleware(sio, app)
+
+        # deploy as an eventlet WSGI server
+        eventlet.wsgi.server(eventlet.listen(('', int(self.args.port[0]))), app)
 
     def run(self):
         print "[*] starting..."
         print "Press CTRL-C to stop"
 
-        # [*] MODE
-        # single word
+        # [*] MODE: single word
         if self.args.word:
-            print "[*] MODE: Single word"
-            self.word = self.args.word[0]
-            print "data: %s" % (self.word)
-            while True:
-                self.drawtext(self.word)
-                time.sleep(2)
+            self.mode_single_word()
 
-        # [*] MODE
-        # Loader
+        # [*] MODE: Loader
         if self.args.loader:
-            print "[*] MODE: Loader"
-            count = 0
-            while True:
-                self.prev = self.word
-                self.word = FELD_LOOP[count]
-                print "data: %s" % (self.word)
-                self.drawtext(self.word)
-                count = (1 + count) % len(FELD_LOOP)
-                time.sleep(2)
+            self.mode_loader()
 
-        # [*] MODE
-        # Socket
+        # [*] MODE: Socket
         if self.args.socket:
-            print "[*] MODE: Socket"
-            sio = socketio.Server()
-            app = Flask(__name__)
-
-            @sio.on('news')
-            def message(sid, data):
-                print "data: %s" % data
-                sio.emit('reply', "received: %s" % data)
-                if isblacklisted(data):
-                    self.prev = self.word
-                    self.word = data
-                    self.drawtext(self.word)
-
-            # wrap Flask application with engineio's middleware
-            app = socketio.Middleware(sio, app)
-
-            # deploy as an eventlet WSGI server
-            eventlet.wsgi.server(eventlet.listen(('', int(self.args.port[0]))), app)
+            self.mode_socket()
 
 # Main function
 if __name__ == "__main__":
