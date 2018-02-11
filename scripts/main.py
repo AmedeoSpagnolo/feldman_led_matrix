@@ -180,7 +180,6 @@ class Feld():
             self.offscreen_canvas.Clear()
             anim_y_shift = int(float(SHIFT) / op['anim_time'] * count)
             anim_ln_line = int(float(delta_words) / op['anim_time'] * (count - 1))
-            print anim_ln_line
             _x = pref_shift + op['x']
             _y = op['y'] - anim_y_shift
             graphics.DrawText(self.offscreen_canvas, op['font'], _x, _y, op['color'], word + op['suffix'])
@@ -224,9 +223,7 @@ class Feld():
             if not isblacklisted(data):
                 time.sleep(0.5)
                 self.drawtext(data)
-                # todo : animation slow
             else:
-                print dir(sio)
                 print "received banned word: %s from %s" % (data, sid)
 
         # wrap Flask application with engineio's middleware
