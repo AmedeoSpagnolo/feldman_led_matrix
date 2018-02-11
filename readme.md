@@ -184,5 +184,6 @@ more [info](https://cdn-learn.adafruit.com/assets/assets/000/015/207/medium800/r
 https://raspberrypi.stackexchange.com/questions/6757/how-to-use-ssh-out-of-home-network
 
 ## TO DO
-		font
-		flickering
+		no double font
+		adjustment letters
+		flickering problem
