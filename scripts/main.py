@@ -192,7 +192,7 @@ class Feld():
         # [*] MODE
         # single word
         if self.args.word:
-            print "[*] MODE: single word"
+            print "[*] MODE: Single word"
             self.word = self.args.word[0]
             print "data: %s" % (self.word)
             while True:
@@ -200,9 +200,9 @@ class Feld():
                 time.sleep(2)
 
         # [*] MODE
-        # only loader
+        # Loader
         if self.args.loader:
-            print "[*] MODE: only loader"
+            print "[*] MODE: Loader"
             count = 0
             while True:
                 self.prev = self.word
@@ -213,9 +213,9 @@ class Feld():
                 time.sleep(2)
 
         # [*] MODE
-        # only socket
+        # Socket
         if self.args.socket:
-            print "[*] MODE: only socket"
+            print "[*] MODE: Socket"
             sio = socketio.Server()
             app = Flask(__name__)
 
@@ -230,6 +230,7 @@ class Feld():
 
             # wrap Flask application with engineio's middleware
             app = socketio.Middleware(sio, app)
+
             # deploy as an eventlet WSGI server
             eventlet.wsgi.server(eventlet.listen(('', int(self.args.port[0]))), app)
 
