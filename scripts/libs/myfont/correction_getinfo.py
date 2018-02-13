@@ -14,10 +14,18 @@ def hex2bin(arr, zeros = 30):
     if not isinstance(arr, list): arr = [arr]
     return [bin(int(i, 16))[2:].zfill(zeros) for i in arr]
 
+def bin2hex(arr, zeros = 4):
+    if not isinstance(arr, list): arr = [arr]
+    return [hex(int(i, 2))[2:].zfill(zeros).upper() for i in arr]
+
+def multilinebin2hex(str):
+    print str + "\n"
+    return "\n".join(bin2hex(str.splitlines()))
+
 def char2ord(string):
     return [ord(i) for i in list(string)]
 
-text = read_text("converted_9.bdf")
+text = read_text("converted_11_b.bdf")
 
 text = re.sub(r'\n', '{{}}', text)
 text = re.sub(r'ENDCHAR{{}}', 'ENDCHAR\n', text)
@@ -51,7 +59,8 @@ def printall():
     for key, value in output.iteritems():
         try:
             print "%s: %s" % (key[1:], value["ord"])
-            print "\n".join(hex2bin(value["val"].splitlines()[1:],value["len"]))
+            print "\n".join(hex2bin(value["val"].splitlines()[1:]))
+            # print "\n".join(hex2bin(value["val"].splitlines()[1:],value["len"]))
         except:
             pass
 
@@ -59,11 +68,12 @@ def printchar(c):
     key = char2ord(c)
     value = output["_"+c]
     # print value
-    print "%s: %s" % (c, value["ord"])
-    print "\n".join(hex2bin(value["val"].splitlines()[1:],value["len"]))
+    print "\n%s: ENCODING %s\n" % (c, value["ord"])
+    print "\n".join(hex2bin(value["val"].splitlines()[1:]))
+    print value["val"]
 
-# printall()
-printchar("C")
-printchar("D")
-printchar("E")
-printchar("G")
+try:
+    printchar(sys.argv[1])
+except:
+    print "missing argument CHAR"
+    print "python correction_getinfo.py a"
