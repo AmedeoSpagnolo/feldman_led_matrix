@@ -48,6 +48,10 @@ class Feld():
             action="store_true",
             help="print loader words")
         self.parser.add_argument(
+            "--test",
+            action="store_true",
+            help="test mode")
+        self.parser.add_argument(
             '--word',
             nargs=1,
             default=False,
@@ -232,6 +236,25 @@ class Feld():
         # deploy as an eventlet WSGI server
         eventlet.wsgi.server(eventlet.listen(('', int(self.args.port[0]))), app)
 
+    def mode_test(self):
+        print "[*] MODE: Test"
+        sio = socketio.Server()
+        app = Flask(__name__)
+
+        @sio.on('news')
+        def message(sid, data):
+            print "data: %s" % data
+            sio.emit('reply', "received: %s" % data)
+            self.canvas.Clear()
+            graphics.DrawText(self.canvas, FONT_BOLD, 0, 13, MAIN_COLOR, data)
+            time.sleep(0.5)
+
+        # wrap Flask application with engineio's middleware
+        app = socketio.Middleware(sio, app)
+
+        # deploy as an eventlet WSGI server
+        eventlet.wsgi.server(eventlet.listen(('', int(self.args.port[0]))), app)
+
     def run(self):
         print "[*] starting..."
         print "Press CTRL-C to stop"
@@ -247,6 +270,10 @@ class Feld():
         # [*] MODE: Socket
         if self.args.socket:
             self.mode_socket()
+
+        # [*] MODE: Test
+        if self.args.test:
+            self.mode_test()
 
 # Main function
 if __name__ == "__main__":
