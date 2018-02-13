@@ -1,6 +1,11 @@
 from rgbmatrix import graphics
 
-FONT = graphics.Font()
+FONT_MAIN = graphics.Font()
+FONT_MAIN.LoadFont("libs/myfont/converted_9.bdf")
+
+FONT_BOLD = graphics.Font()
+FONT_BOLD.LoadFont("libs/myfont/converted_11_b.bdf")
+
 MAIN_COLOR = graphics.Color(255,255,255)
 
 MARGIN_LEFT = 0
@@ -21,9 +26,12 @@ FELD_LOOP = [
 ]
 
 # FONT.LoadFont("libs/fonts/4x6.bdf")
-FONT.LoadFont("libs/newfont/converted_14.bdf")
 
 ANIMATION_TIME = 10
 SHIFT = 5
 
-PREFIX = "FELD"
+PREFIX = "Feld"
+
+# libs/fonts/4x6.bdf
+# libs/myfont/converted_9.bdf
+# libs/myfont/converted_11_b.bdf
