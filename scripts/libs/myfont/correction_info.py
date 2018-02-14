@@ -25,7 +25,7 @@ def multilinebin2hex(str):
 def char2ord(string):
     return [ord(i) for i in list(string)]
 
-text = read_text("converted_11_b.bdf")
+text = read_text("font_bold.bdf")
 
 text = re.sub(r'\n', '{{}}', text)
 text = re.sub(r'ENDCHAR{{}}', 'ENDCHAR\n', text)
@@ -76,4 +76,4 @@ try:
     printchar(sys.argv[1])
 except:
     print "missing argument CHAR"
-    print "python correction_getinfo.py a"
+    print "python correction_info.py a"

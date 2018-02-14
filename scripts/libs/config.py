@@ -1,10 +1,10 @@
 from rgbmatrix import graphics
 
 FONT_MAIN = graphics.Font()
-FONT_MAIN.LoadFont("libs/myfont/converted_9.bdf")
+FONT_MAIN.LoadFont("libs/myfont/font_book.bdf")
 
 FONT_BOLD = graphics.Font()
-FONT_BOLD.LoadFont("libs/myfont/converted_11_b.bdf")
+FONT_BOLD.LoadFont("libs/myfont/font_bold.bdf")
 
 MAIN_COLOR = graphics.Color(255,255,255)
 
@@ -24,8 +24,6 @@ FELD_LOOP = [
   "print",
   "web"
 ]
-
-# FONT.LoadFont("libs/fonts/4x6.bdf")
 
 ANIMATION_TIME = 10
 SHIFT = 5
