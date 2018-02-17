@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import sys
 import os
 sys.path.append(sys.path[0])
@@ -51,6 +50,20 @@ class Feld():
             "--test",
             action="store_true",
             help="test mode")
+        self.parser.add_argument(
+            '--test_font_bold',
+            nargs=1,
+            default=False,
+            required=False,
+            help="write a word",
+            type=str)
+        self.parser.add_argument(
+            '--test_font_book',
+            nargs=1,
+            default=False,
+            required=False,
+            help="write a word",
+            type=str)
         self.parser.add_argument(
             '--word',
             nargs=1,
@@ -249,11 +262,19 @@ class Feld():
             graphics.DrawText(self.canvas, FONT_BOLD, 0, 13, MAIN_COLOR, data)
             time.sleep(0.5)
 
-        # wrap Flask application with engineio's middleware
-        app = socketio.Middleware(sio, app)
+    def mode_test_font_bold(self):
+        print "[*] MODE: Test Font Bold"
+        print "data: %s" % (self.argstest_font_bold[0])
+        while True:
+            self.drawtext(self.argstest_font_bold[0], {'anim': False})
+            time.sleep(2)
 
-        # deploy as an eventlet WSGI server
-        eventlet.wsgi.server(eventlet.listen(('', int(self.args.port[0]))), app)
+    def mode_test_font_book(self):
+        print "[*] MODE: Test Font Book"
+        print "data: %s" % (self.argstest_font_book[0])
+        while True:
+            self.drawtext(self.argstest_font_book[0], {'anim': False})
+            time.sleep(2)
 
     def run(self):
         print "[*] starting..."
@@ -274,6 +295,14 @@ class Feld():
         # [*] MODE: Test
         if self.args.test:
             self.mode_test()
+
+        # [*] MODE: test_font_bold
+        if self.args.test_font_bold:
+            self.mode_test_font_bold()
+
+        # [*] MODE: test_font_book
+        if self.args.test_font_book:
+            self.mode_test_font_book()
 
 # Main function
 if __name__ == "__main__":
