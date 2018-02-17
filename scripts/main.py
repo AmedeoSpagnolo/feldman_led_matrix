@@ -187,24 +187,26 @@ class Feld():
             'anim_time': ANIMATION_TIME,
             'outline': True,
             'prefix': PREFIX,
+            'font_book': FONT_MAIN,
+            'font_bold': FONT_BOLD,
             'suffix': ".",
             'color': MAIN_COLOR}
         op.update(opt)
         count = op['anim_time'] if op['anim'] else 1
-        pref_shift = self.ll(op['prefix'], FONT_BOLD) if op['prefix'] else 0
-        delta_words = self.ll(self.word, FONT_MAIN) - self.ll(self.prev, FONT_MAIN)
+        pref_shift = self.ll(op['prefix'], op['font_bold']) if op['prefix'] else 0
+        delta_words = self.ll(self.word, op['font_book']) - self.ll(self.prev, op['font_book'])
         while count > 0:
             self.offscreen_canvas.Clear()
             anim_y_shift = int(float(SHIFT) / op['anim_time'] * count)
             anim_ln_line = int(float(delta_words) / op['anim_time'] * (count - 1))
             _x = pref_shift + op['x']
             _y = op['y'] - anim_y_shift
-            graphics.DrawText(self.offscreen_canvas, FONT_MAIN, _x, _y, op['color'], word + op['suffix'])
+            graphics.DrawText(self.offscreen_canvas, op['font_book'], _x, _y, op['color'], word + op['suffix'])
             if op['prefix']:
-                graphics.DrawText(self.offscreen_canvas, FONT_BOLD, op['x'], op['y'], op['color'], op['prefix'])
+                graphics.DrawText(self.offscreen_canvas, op['font_bold'], op['x'], op['y'], op['color'], op['prefix'])
             if op['outline']:
                 __x1 = _x
-                __x2 = pref_shift + self.ll(word, FONT_MAIN) + 2 - anim_ln_line
+                __x2 = pref_shift + self.ll(word, op['font_book']) + 2 - anim_ln_line
                 __y = op['y'] + 1
                 graphics.DrawLine(self.offscreen_canvas, __x1, __y, __x2, __y, op["color"])
             self.offscreen_canvas = self.canvas.SwapOnVSync(self.offscreen_canvas)
@@ -267,6 +269,8 @@ class Feld():
         print "data: %s" % (self.args.test_font_bold[0])
         while True:
             self.drawtext(self.args.test_font_bold[0], {
+                'prefix': '',
+                'font_book': FONT_BOLD,
                 'suffix': '',
                 'anim': False,
                 'outline': False})
@@ -277,6 +281,7 @@ class Feld():
         print "data: %s" % (self.args.test_font_book[0])
         while True:
             self.drawtext(self.args.test_font_book[0], {
+                'prefix': '',
                 'suffix': '',
                 'anim': False,
                 'outline': False})
