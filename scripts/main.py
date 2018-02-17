@@ -264,16 +264,22 @@ class Feld():
 
     def mode_test_font_bold(self):
         print "[*] MODE: Test Font Bold"
-        print "data: %s" % (self.argstest_font_bold[0])
+        print "data: %s" % (self.args.test_font_bold[0])
         while True:
-            self.drawtext(self.argstest_font_bold[0], {'anim': False})
+            self.drawtext(self.args.test_font_bold[0], {
+                'suffix': '',
+                'anim': False,
+                'outline': False})
             time.sleep(2)
 
     def mode_test_font_book(self):
         print "[*] MODE: Test Font Book"
-        print "data: %s" % (self.argstest_font_book[0])
+        print "data: %s" % (self.args.test_font_book[0])
         while True:
-            self.drawtext(self.argstest_font_book[0], {'anim': False})
+            self.drawtext(self.args.test_font_book[0], {
+                'suffix': '',
+                'anim': False,
+                'outline': False})
             time.sleep(2)
 
     def run(self):
