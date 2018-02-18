@@ -139,6 +139,55 @@ class Feld():
             help="Switch if your matrix has led colors swapped. Default: RGB",
             default="RGB",
             type=str)
+        self.parser.add_argument(
+            '--margin_left',
+            nargs=1,
+            default=False,
+            required=False,
+            help="set margin left",
+            type=int)
+        self.parser.add_argument(
+            '--margin_top',
+            nargs=1,
+            default=False,
+            required=False,
+            help="set margin top",
+            type=int)
+        self.parser.add_argument(
+            '--animation_time',
+            nargs=1,
+            default=False,
+            required=False,
+            help="set animation time",
+            type=int)
+        self.parser.add_argument(
+            '--shift',
+            nargs=1,
+            default=False,
+            required=False,
+            help="shift",
+            type=int)
+        self.parser.add_argument(
+            '--prefix',
+            nargs=1,
+            default=False,
+            required=False,
+            help="set prefix",
+            type=str)
+        self.parser.add_argument(
+            '--font_main',
+            nargs=1,
+            default=False,
+            required=False,
+            help="shift",
+            type=int)
+        self.parser.add_argument(
+            '--font_bold',
+            nargs=1,
+            default=False,
+            required=False,
+            help="shift",
+            type=int)
         self.args = self.parser.parse_args()
 
         self.canvas = self.canvas_init(self.args)
@@ -155,6 +204,20 @@ class Feld():
 
     # todo
     def canvas_init(self, arg):
+        if arg.margin_left
+            MARGIN_LEFT = arg.margin_left
+        if arg.margin_top
+            MARGIN_TOP = arg.margin_top
+        if arg.animation_time
+            ANIMATION_TIME = arg.animation_time
+        if arg.yshift
+            YSHIFT = arg.yshift
+        if arg.prefix
+            PREFIX = arg.prefix
+        if arg.font_main
+            FONT_MAIN.LoadFont("libs/myfont/weights/font_" + arg.font_main + ".bdf")
+        if arg.font_bold
+            FONT_BOLD.LoadFont("libs/myfont/weights/font_" + arg.font_bold + "_b.bdf")
         options = RGBMatrixOptions()
         if arg.led_gpio_mapping != None:
           options.hardware_mapping = arg.led_gpio_mapping
@@ -197,7 +260,7 @@ class Feld():
         delta_words = self.ll(self.word, op['font_book']) - self.ll(self.prev, op['font_book'])
         while count > 0:
             self.offscreen_canvas.Clear()
-            anim_y_shift = int(float(SHIFT) / op['anim_time'] * count)
+            anim_y_shift = int(float(YSHIFT) / op['anim_time'] * count)
             anim_ln_line = int(float(delta_words) / op['anim_time'] * (count - 1))
             _x = pref_shift + op['x']
             _y = op['y'] - anim_y_shift
