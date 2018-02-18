@@ -7,7 +7,6 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/..'))
 from rgbmatrix import graphics, RGBMatrixOptions, RGBMatrix
 
 from libs.blacklist import *
-from libs.config import *
 
 import argparse
 import time
@@ -204,6 +203,10 @@ class Feld():
 
     # todo
     def canvas_init(self, arg):
+        options = RGBMatrixOptions()
+        options.rows = arg.led_rows
+        fontsize_book = int(arg.font_main[0]) if arg.font_main else 16
+        fontsize_bold = int(arg.font_bold[0]) if arg.font_bold else 16
         self.FELD_LOOP = [
             "man",
             "design",
@@ -216,30 +219,24 @@ class Feld():
             "video",
             "print",
             "web"]
-        self.MARGIN_LEFT = arg.margin_left[0] if arg.margin_left else 0
-        self.MARGIN_TOP = arg.margin_top[0] if arg.margin_top else 5
         self.ANIMATION_TIME = arg.animation_time[0] if arg.animation_time else 10
         self.YSHIFT = arg.yshift[0] if arg.yshift else 5
         self.PREFIX = arg.prefx[0] if arg.prefx else "Feld"
         self.MAIN_COLOR = graphics.Color(255,255,255)
+        self.MARGIN_LEFT = arg.margin_left[0] if arg.margin_left else 0
+        if arg.margin_top:
+            self.MARGIN_TOP = arg.margin_top[0]
+        else:
+            self.MARGIN_TOP = (options.rows + fontsize_bold)/2
         self.FONT_MAIN = graphics.Font()
-        if arg.font_main:
-            print "yes", arg.font_main[0]
-            self.FONT_MAIN.LoadFont("libs/myfont/weights/font_" + str(arg.font_main[0]) + "_book.bdf")
-        else:
-            print "non", arg.font_main
-            self.FONT_MAIN.LoadFont("libs/myfont/weights/font_16_book.bdf")
+        self.FONT_MAIN.LoadFont("libs/myfont/weights/font_" + str(fontsize_book) + "_book.bdf")
+
         self.FONT_BOLD = graphics.Font()
-        if arg.font_bold:
-            print "yes", arg.font_main[0]
-            self.FONT_BOLD.LoadFont("libs/myfont/weights/font_" + str(arg.font_bold[0]) + "_bold.bdf")
-        else:
-            print "non", arg.font_main
-            self.FONT_BOLD.LoadFont("libs/myfont/weights/font_16_bold.bdf")
-        options = RGBMatrixOptions()
+        self.FONT_BOLD.LoadFont("libs/myfont/weights/font_" + str(fontsize_bold) + "_bold.bdf")
+
         if arg.led_gpio_mapping != None:
           options.hardware_mapping = arg.led_gpio_mapping
-        options.rows = arg.led_rows
+
         options.chain_length = arg.led_chain
         options.parallel = arg.led_parallel
         options.pwm_bits = arg.led_pwm_bits
