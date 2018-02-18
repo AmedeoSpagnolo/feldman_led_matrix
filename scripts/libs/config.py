@@ -1,15 +1,17 @@
 from rgbmatrix import graphics
 
 FONT_MAIN = graphics.Font()
-FONT_MAIN.LoadFont("libs/myfont/font_book.bdf")
+# FONT_MAIN.LoadFont("libs/myfont/font_book.bdf")
+FONT_MAIN.LoadFont("libs/myfont/converted_16.bdf")
 
 FONT_BOLD = graphics.Font()
-FONT_BOLD.LoadFont("libs/myfont/font_bold.bdf")
+# FONT_BOLD.LoadFont("libs/myfont/font_bold.bdf")
+FONT_BOLD.LoadFont("libs/myfont/converted_16_b.bdf")
 
 MAIN_COLOR = graphics.Color(255,255,255)
 
 MARGIN_LEFT = 0
-MARGIN_TOP = 14
+MARGIN_TOP = 20
 
 FELD_LOOP = [
   "man",
