@@ -161,14 +161,14 @@ class Feld():
             help="set animation time",
             type=int)
         self.parser.add_argument(
-            '--shift',
+            '--yshift',
             nargs=1,
             default=False,
             required=False,
             help="shift",
             type=int)
         self.parser.add_argument(
-            '--prefix',
+            '--prefx',
             nargs=1,
             default=False,
             required=False,
@@ -204,20 +204,20 @@ class Feld():
 
     # todo
     def canvas_init(self, arg):
-        if arg.margin_left
-            MARGIN_LEFT = arg.margin_left
-        if arg.margin_top
-            MARGIN_TOP = arg.margin_top
-        if arg.animation_time
-            ANIMATION_TIME = arg.animation_time
-        if arg.yshift
-            YSHIFT = arg.yshift
-        if arg.prefix
-            PREFIX = arg.prefix
-        if arg.font_main
-            FONT_MAIN.LoadFont("libs/myfont/weights/font_" + arg.font_main + ".bdf")
-        if arg.font_bold
-            FONT_BOLD.LoadFont("libs/myfont/weights/font_" + arg.font_bold + "_b.bdf")
+        if arg.margin_left:
+            MARGIN_LEFT = arg.margin_left[0]
+        if arg.margin_top:
+            MARGIN_TOP = arg.margin_top[0]
+        if arg.animation_time:
+            ANIMATION_TIME = arg.animation_time[0]
+        if arg.yshift:
+            YSHIFT = arg.yshift[0]
+        if arg.prefx:
+            PREFIX = arg.prefx[0]
+        if arg.font_main:
+            FONT_MAIN.LoadFont("libs/myfont/weights/font_" + str(arg.font_main[0]) + "_book.bdf")
+        if arg.font_bold:
+            FONT_BOLD.LoadFont("libs/myfont/weights/font_" + str(arg.font_bold[0]) + "_bold.bdf")
         options = RGBMatrixOptions()
         if arg.led_gpio_mapping != None:
           options.hardware_mapping = arg.led_gpio_mapping
@@ -241,6 +241,7 @@ class Feld():
         return sum([font.CharacterWidth(ord(c)) for c in string]) + spaces
 
     def drawtext(self, word, opt = {}):
+
         self.prev = self.word
         self.word = word
         op = {
