@@ -165,7 +165,7 @@ class Feld():
             nargs=1,
             default=False,
             required=False,
-            help="shift",
+            help="set animation y shift",
             type=int)
         self.parser.add_argument(
             '--prefx',
@@ -179,14 +179,14 @@ class Feld():
             nargs=1,
             default=False,
             required=False,
-            help="shift",
+            help="font book height in pixel",
             type=int)
         self.parser.add_argument(
             '--font_bold',
             nargs=1,
             default=False,
             required=False,
-            help="shift",
+            help="font bold height in pixel",
             type=int)
         self.args = self.parser.parse_args()
 
@@ -204,20 +204,38 @@ class Feld():
 
     # todo
     def canvas_init(self, arg):
-        if arg.margin_left:
-            MARGIN_LEFT = arg.margin_left[0]
-        if arg.margin_top:
-            MARGIN_TOP = arg.margin_top[0]
-        if arg.animation_time:
-            ANIMATION_TIME = arg.animation_time[0]
-        if arg.yshift:
-            YSHIFT = arg.yshift[0]
-        if arg.prefx:
-            PREFIX = arg.prefx[0]
+        self.FELD_LOOP = [
+            "man",
+            "design",
+            "branding",
+            "advertising",
+            "typography",
+            "photography",
+            "illustration",
+            "editorial",
+            "video",
+            "print",
+            "web"]
+        self.MARGIN_LEFT = arg.margin_left[0] if arg.margin_left else 0
+        self.MARGIN_TOP = arg.margin_top[0] if arg.margin_top else 5
+        self.ANIMATION_TIME = arg.animation_time[0] if arg.animation_time else 10
+        self.YSHIFT = arg.yshift[0] if arg.yshift else 5
+        self.PREFIX = arg.prefx[0] if arg.prefx else "Feld"
+        self.MAIN_COLOR = graphics.Color(255,255,255)
+        self.FONT_MAIN = graphics.Font()
         if arg.font_main:
-            FONT_MAIN.LoadFont("libs/myfont/weights/font_" + str(arg.font_main[0]) + "_book.bdf")
+            print "yes", arg.font_main[0]
+            self.FONT_MAIN.LoadFont("libs/myfont/weights/font_" + str(arg.font_main[0]) + "_book.bdf")
+        else:
+            print "non", arg.font_main
+            self.FONT_MAIN.LoadFont("libs/myfont/weights/font_16_book.bdf")
+        self.FONT_BOLD = graphics.Font()
         if arg.font_bold:
-            FONT_BOLD.LoadFont("libs/myfont/weights/font_" + str(arg.font_bold[0]) + "_bold.bdf")
+            print "yes", arg.font_main[0]
+            self.FONT_BOLD.LoadFont("libs/myfont/weights/font_" + str(arg.font_bold[0]) + "_bold.bdf")
+        else:
+            print "non", arg.font_main
+            self.FONT_BOLD.LoadFont("libs/myfont/weights/font_16_bold.bdf")
         options = RGBMatrixOptions()
         if arg.led_gpio_mapping != None:
           options.hardware_mapping = arg.led_gpio_mapping
@@ -245,23 +263,23 @@ class Feld():
         self.prev = self.word
         self.word = word
         op = {
-            'x': MARGIN_LEFT,
-            'y': MARGIN_TOP,
+            'x': self.MARGIN_LEFT,
+            'y': self.MARGIN_TOP,
             'anim': True,
-            'anim_time': ANIMATION_TIME,
+            'anim_time': self.ANIMATION_TIME,
             'outline': True,
-            'prefix': PREFIX,
-            'font_book': FONT_MAIN,
-            'font_bold': FONT_BOLD,
+            'prefix': self.PREFIX,
+            'font_book': self.FONT_MAIN,
+            'font_bold': self.FONT_BOLD,
             'suffix': ".",
-            'color': MAIN_COLOR}
+            'color': self.MAIN_COLOR}
         op.update(opt)
         count = op['anim_time'] if op['anim'] else 1
         pref_shift = self.ll(op['prefix'], op['font_bold']) if op['prefix'] else 0
         delta_words = self.ll(self.word, op['font_book']) - self.ll(self.prev, op['font_book'])
         while count > 0:
             self.offscreen_canvas.Clear()
-            anim_y_shift = int(float(YSHIFT) / op['anim_time'] * count)
+            anim_y_shift = int(float(self.YSHIFT) / op['anim_time'] * count)
             anim_ln_line = int(float(delta_words) / op['anim_time'] * (count - 1))
             _x = pref_shift + op['x']
             _y = op['y'] - anim_y_shift
@@ -288,9 +306,9 @@ class Feld():
         print "[*] MODE: Loader"
         count = 0
         while True:
-            print "data: %s" % (FELD_LOOP[count])
-            self.drawtext(FELD_LOOP[count])
-            count = (1 + count) % len(FELD_LOOP)
+            print "data: %s" % (self.FELD_LOOP[count])
+            self.drawtext(self.FELD_LOOP[count])
+            count = (1 + count) % len(self.FELD_LOOP)
             time.sleep(2)
 
     def mode_socket(self):
@@ -325,7 +343,7 @@ class Feld():
             print "data: %s" % data
             sio.emit('reply', "received: %s" % data)
             self.canvas.Clear()
-            graphics.DrawText(self.canvas, FONT_BOLD, 0, 13, MAIN_COLOR, data)
+            graphics.DrawText(self.canvas, self.FONT_BOLD, 0, 13, self.MAIN_COLOR, data)
             time.sleep(0.5)
 
     def mode_test_font_bold(self):
@@ -334,7 +352,7 @@ class Feld():
         while True:
             self.drawtext(self.args.test_font_bold[0], {
                 'prefix': '',
-                'font_book': FONT_BOLD,
+                'font_book': self.FONT_BOLD,
                 'suffix': '',
                 'anim': False,
                 'outline': False})
