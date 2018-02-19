@@ -186,7 +186,11 @@ https://raspberrypi.stackexchange.com/questions/6757/how-to-use-ssh-out-of-home-
 ## TO DO
 		no double font
 		adjustment letters
-		flickering problem
+		special chars broking words
+		animation
+		underline double
+		underline slow
+		dots
 
 ## I
 
