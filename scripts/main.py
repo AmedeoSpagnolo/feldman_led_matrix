@@ -46,10 +46,6 @@ class Feld():
             action="store_true",
             help="print loader words")
         self.parser.add_argument(
-            "--test",
-            action="store_true",
-            help="test mode")
-        self.parser.add_argument(
             '--test_font_bold',
             nargs=1,
             default=False,
@@ -382,10 +378,6 @@ class Feld():
         # [*] MODE: Socket
         if self.args.socket:
             self.mode_socket()
-
-        # [*] MODE: Test
-        if self.args.test:
-            self.mode_test()
 
         # [*] MODE: Test Font Bold
         if self.args.test_font_bold:

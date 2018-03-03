@@ -208,8 +208,6 @@ https://raspberrypi.stackexchange.com/questions/6757/how-to-use-ssh-out-of-home-
 ## TO DO
 		adjustment letters
 		special chars broking words
-		animation
-		underline double
 		underline slow
 		dots
 
