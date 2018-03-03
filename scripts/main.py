@@ -370,7 +370,7 @@ class Feld():
         print "[*] starting..."
         print "Press CTRL-C to stop"
 
-        # [*] MODE: single word
+        # [*] MODE: Single Word
         if self.args.word:
             self.mode_single_word()
 
@@ -386,11 +386,11 @@ class Feld():
         if self.args.test:
             self.mode_test()
 
-        # [*] MODE: test_font_bold
+        # [*] MODE: Test Font Bold
         if self.args.test_font_bold:
             self.mode_test_font_bold()
 
-        # [*] MODE: test_font_book
+        # [*] MODE: Test Font Book
         if self.args.test_font_book:
             self.mode_test_font_book()
 

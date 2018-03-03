@@ -158,23 +158,45 @@ more [info](https://cdn-learn.adafruit.com/assets/assets/000/015/207/medium800/r
 
 ## Run
 
-### Simple Feldman loader
+#### [*] MODE: Single Word
+It shows single word on the led screen
+ 
+	./run_word
+	
+	# alternative
+	cd ~/feldman_led_matrix/scripts && sudo python main.py --led-rows=32 --led-chain=2  --led-brightness=30 --led-pwm-lsb-nanoseconds=80 --led-slowdown-gpio=2 --led-scan-mode=1 --margin_left=0 --font_main=18 --font_bold=18 --word=man
+	
+#### [*] MODE: Loader
+Simple Animation with given words: 
+man, design, branding, advertising, typography, photography, illustration, editorial, video, print, web 
 
-		./loader
+	./run_loader
+	
+	# alternative
+	cd ~/feldman_led_matrix/scripts && sudo python main.py --led-rows=32 --led-chain=2  --led-brightness=30 --led-pwm-lsb-nanoseconds=80 --led-slowdown-gpio=2 --led-scan-mode=1 --margin_left=0 --font_main=18 --font_bold=18 --loader
+	
+#### [*] MODE: Socket
+Receiving and display words from socket connection
 
-###### alternative
+	./run_socket
+	
+	# alternative
+	cd ~/feldman_led_matrix/scripts && sudo python main.py --led-rows=32 --led-chain=2  --led-brightness=30 --led-pwm-lsb-nanoseconds=80 --led-slowdown-gpio=2 --led-scan-mode=1 --margin_left=0 --font_main=18 --font_bold=18 --socket --port=4444
 
-		cd ~/feldman_led_matrix/scripts/ && sudo python feldman_loader.py --boris --led-rows=16 --led-chain=2
+#### [*] MODE: Test Font Bold
+Display a single word in Bold
 
+	./test_font_bold
+	
+	# alternative
+	cd ~/feldman_led_matrix/scripts && sudo python main.py --led-rows=32 --led-chain=2  --led-brightness=30 --led-pwm-lsb-nanoseconds=80 --led-slowdown-gpio=2 --led-scan-mode=1 --margin_left=0 --font_main=18 --font_bold=18 --test_font_bold abc
+#### [*] MODE: Test Font Book
+Display a single word in Regular font
 
-### Server Felman
-
-		./matrix
-
-###### alternative
-
-		cd ~/feldman_led_matrix/scripts/ && sudo python feldman_server1.py --boris --led-rows=16 --led-chain=2
-
+	./test_font_bold
+	
+	# alternative
+	cd ~/feldman_led_matrix/scripts && sudo python main.py --led-rows=32 --led-chain=2  --led-brightness=30 --led-pwm-lsb-nanoseconds=80 --led-slowdown-gpio=2 --led-scan-mode=1 --margin_left=0 --font_main=18 --font_bold=18 --test_font_book abc
 ## Dev
 
 #### Automatic Update
@@ -184,7 +206,6 @@ more [info](https://cdn-learn.adafruit.com/assets/assets/000/015/207/medium800/r
 https://raspberrypi.stackexchange.com/questions/6757/how-to-use-ssh-out-of-home-network
 
 ## TO DO
-		no double font
 		adjustment letters
 		special chars broking words
 		animation
