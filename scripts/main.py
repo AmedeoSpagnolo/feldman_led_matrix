@@ -288,6 +288,7 @@ class Feld():
                 __x2 = pref_shift + self.ll(word, op['font_book']) + 2 - anim_ln_line
                 __y = op['y'] + 1
                 graphics.DrawLine(self.offscreen_canvas, __x1, __y, __x2, __y, op["color"])
+                graphics.DrawLine(self.offscreen_canvas, __x1, __y + 1, __x2, __y + 1, op["color"])
             self.offscreen_canvas = self.canvas.SwapOnVSync(self.offscreen_canvas)
             time.sleep(0.01)
             count -= 1
