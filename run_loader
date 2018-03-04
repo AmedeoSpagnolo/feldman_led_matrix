@@ -1,2 +1,2 @@
 #!/bin/bash
-cd ~/feldman_led_matrix/scripts && sudo python main.py --led-rows=32 --led-chain=8  --led-brightness=30 --led-pwm-lsb-nanoseconds=80 --led-slowdown-gpio=2 --led-scan-mode=1 --margin_left=0 --font_main=18 --font_bold=18 --yshift=8 --loader
+cd ~/feldman_led_matrix/scripts && sudo python main.py --led-rows=32 --led-chain=8  --led-brightness=30 --led-pwm-lsb-nanoseconds=80 --led-slowdown-gpio=2 --led-scan-mode=1 --margin_left=0 --font_main=18 --font_bold=18 --yshift=8 --prefx=Feld --margin_left=1 --suffx=studio --animation_time=10 --loader

@@ -5,7 +5,6 @@ sys.path.append(sys.path[0])
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/..'))
 
 from rgbmatrix import graphics, RGBMatrixOptions, RGBMatrix
-
 from libs.blacklist import *
 
 import argparse
@@ -35,7 +34,7 @@ class Feld():
             type=int,
             help="with -s/--socket specify port for connection")
         self.parser.add_argument(
-            "--prefix",
+            "--suffx",
             nargs=1,
             default=False,
             required=False,
@@ -153,7 +152,7 @@ class Feld():
             nargs=1,
             default=False,
             required=False,
-            help="set animation time",
+            help="set animation time, default 10",
             type=int)
         self.parser.add_argument(
             '--yshift',
@@ -218,21 +217,16 @@ class Feld():
         self.ANIMATION_TIME = arg.animation_time[0] if arg.animation_time else 10
         self.YSHIFT = arg.yshift[0] if arg.yshift else 5
         self.PREFIX = arg.prefx[0] if arg.prefx else "Feld"
+        self.SUFFIX = arg.suffx[0] if arg.suffx else ""
         self.MAIN_COLOR = graphics.Color(255,255,255)
         self.MARGIN_LEFT = arg.margin_left[0] if arg.margin_left else 0
-        if arg.margin_top:
-            self.MARGIN_TOP = arg.margin_top[0]
-        else:
-            self.MARGIN_TOP = (options.rows + fontsize_bold)/2
+        self.MARGIN_TOP = arg.margin_top[0] if arg.margin_top else (options.rows + fontsize_bold)/2
         self.FONT_MAIN = graphics.Font()
         self.FONT_MAIN.LoadFont("libs/myfont/weights/font_" + str(fontsize_book) + "_book.bdf")
-
         self.FONT_BOLD = graphics.Font()
         self.FONT_BOLD.LoadFont("libs/myfont/weights/font_" + str(fontsize_bold) + "_bold.bdf")
-
         if arg.led_gpio_mapping != None:
           options.hardware_mapping = arg.led_gpio_mapping
-
         options.chain_length = arg.led_chain
         options.parallel = arg.led_parallel
         options.pwm_bits = arg.led_pwm_bits
@@ -247,44 +241,64 @@ class Feld():
           options.disable_hardware_pulsing = True
         return RGBMatrix(options = options)
 
-    def ll(self, string, font):
-        spaces = len(string) * 3
+    def ll(self, string, font, spacing = 2):
+        spaces = len(string) * spacing
         return sum([font.CharacterWidth(ord(c)) for c in string]) + spaces
 
     def drawtext(self, word, opt = {}):
-
         self.prev = self.word
         self.word = word
         op = {
-            'x': self.MARGIN_LEFT,
-            'y': self.MARGIN_TOP,
+            'ml': self.MARGIN_LEFT,
+            'mt': self.MARGIN_TOP,
+            'dot': True,
             'anim': True,
-            'anim_time': self.ANIMATION_TIME,
             'outline': True,
+            'color': self.MAIN_COLOR,
             'prefix': self.PREFIX,
+            'suffix': self.SUFFIX,
+            'anim_time': self.ANIMATION_TIME,
             'font_book': self.FONT_MAIN,
-            'font_bold': self.FONT_BOLD,
-            'suffix': ".",
-            'color': self.MAIN_COLOR}
+            'font_bold': self.FONT_BOLD,}
         op.update(opt)
-        count = op['anim_time'] if op['anim'] else 1
-        pref_shift = self.ll(op['prefix'], op['font_bold']) if op['prefix'] else 0
+
         delta_words = self.ll(self.word, op['font_book']) - self.ll(self.prev, op['font_book'])
+        prefix_length = self.ll(op['prefix'], op['font_bold'], 1) if op['prefix'] else 0
+        word_length = self.ll(word, op['font_book'], 1)
+
+        count = op['anim_time'] if op['anim'] else 1
         while count > 0:
             self.offscreen_canvas.Clear()
+
             anim_y_shift = int(float(self.YSHIFT) / op['anim_time'] * count)
-            anim_ln_line = int(float(delta_words) / op['anim_time'] * (count - 1))
-            _x = pref_shift + op['x']
-            _y = op['y'] - anim_y_shift
-            graphics.DrawText(self.offscreen_canvas, op['font_book'], _x, _y, op['color'], word + op['suffix'])
+            anim_x_shift = int(float(delta_words) / op['anim_time'] * (count - 1))
+
+            baseline = op['mt'] # y
+            X0 = op['ml'] # prefix x value
+            X1 = op['ml'] + prefix_length # word x value
+            X2 = X1 + self.ll(word, op['font_book']) # dot x value
+
+            # [-- DRAW --]: prefix
             if op['prefix']:
-                graphics.DrawText(self.offscreen_canvas, op['font_bold'], op['x'], op['y'], op['color'], op['prefix'])
+                graphics.DrawText(self.offscreen_canvas, op['font_bold'], X0, baseline, op['color'], op['prefix'])
+
+            # [-- DRAW --]: word
+            graphics.DrawText(self.offscreen_canvas, op['font_book'], X1, baseline - anim_y_shift, op['color'], word)
+
+            # [-- DRAW --]: outline
             if op['outline']:
-                __x1 = _x
-                __x2 = pref_shift + self.ll(word, op['font_book']) + 2 - anim_ln_line
-                __y = op['y'] + 1
-                graphics.DrawLine(self.offscreen_canvas, __x1, __y, __x2, __y, op["color"])
-                graphics.DrawLine(self.offscreen_canvas, __x1, __y + 1, __x2, __y + 1, op["color"])
+                graphics.DrawLine(self.offscreen_canvas, X1, baseline + 2, X2 + 1 - anim_x_shift, baseline + 2, op["color"])
+                graphics.DrawLine(self.offscreen_canvas, X1, baseline + 3, X2 + 1 - anim_x_shift, baseline + 3, op["color"])
+
+            # [-- DRAW --]: dot
+            if op['dot']:
+                graphics.DrawLine(self.offscreen_canvas, X2 + 1 - anim_x_shift, baseline - 2, X2 - anim_x_shift, baseline - 2, op["color"])
+                graphics.DrawLine(self.offscreen_canvas, X2 + 1 - anim_x_shift, baseline - 1, X2 - anim_x_shift, baseline - 1, op["color"])
+
+            # [-- DRAW --]: suffix
+            if op['suffix']:
+                graphics.DrawText(self.offscreen_canvas, op['font_bold'], X2 + 3 - anim_x_shift, baseline, op['color'], op['suffix'])
+
             self.offscreen_canvas = self.canvas.SwapOnVSync(self.offscreen_canvas)
             time.sleep(0.01)
             count -= 1
@@ -327,29 +341,14 @@ class Feld():
         # deploy as an eventlet WSGI server
         eventlet.wsgi.server(eventlet.listen(('', int(self.args.port[0]))), app)
 
-    def mode_test(self):
-        print "[*] MODE: Test"
-        sio = socketio.Server()
-        app = Flask(__name__)
-
-        @sio.on('news')
-        def message(sid, data):
-            print "data: %s" % data
-            sio.emit('reply', "received: %s" % data)
-            self.canvas.Clear()
-            graphics.DrawText(self.canvas, self.FONT_BOLD, 0, 13, self.MAIN_COLOR, data)
-            time.sleep(0.5)
-
     def mode_test_font_bold(self):
         print "[*] MODE: Test Font Bold"
         print "data: %s" % (self.args.test_font_bold[0])
         while True:
             self.drawtext(self.args.test_font_bold[0], {
-                'prefix': '',
+                'prefix': '', 'suffix': '',
                 'font_book': self.FONT_BOLD,
-                'suffix': '',
-                'anim': False,
-                'outline': False})
+                'anim': False, 'outline': False})
             time.sleep(2)
 
     def mode_test_font_book(self):
@@ -357,10 +356,8 @@ class Feld():
         print "data: %s" % (self.args.test_font_book[0])
         while True:
             self.drawtext(self.args.test_font_book[0], {
-                'prefix': '',
-                'suffix': '',
-                'anim': False,
-                'outline': False})
+                'prefix': '', 'suffix': '',
+                'anim': False, 'outline': False})
             time.sleep(2)
 
     def run(self):
