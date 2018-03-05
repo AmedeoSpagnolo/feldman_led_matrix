@@ -17,12 +17,33 @@
   <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
   <script type="text/javascript">
 
-      var boris = {
+      var lab = {
+        "port": 12345,
+        "host": "10.200.200.209"
+      }
+
+      var hk = {
+        "port": 54,
+        "host": "116.48.170.226" // pipeter.asuscomm.com
+      }
+
+      var fr = {
+        "port": 12345,
+        "host": "feldmanstudio.ddns.net"
+      }
+
+      var wan = {
+        "port": 12345,
+        "host": "192.168.50.181"
+      }
+
+      var bf = {
         "port": 12345,
         "host": "90.92.199.158"
       }
 
-      var url  = 'ws://' + boris["host"] + ':' + boris["port"] + '/'
+      var url  = 'ws://' + wan["host"] + ':' + wan["port"] + '/'
+      var url  = 'ws://' + bf["host"] + ':' + bf["port"] + '/'
 
       var socket = io(url)
 
