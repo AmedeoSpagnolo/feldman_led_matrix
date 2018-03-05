@@ -345,7 +345,7 @@ class Feld():
         sio = socketio.Server()
         app = Flask(__name__)
         self.drawtext("", {'suffix': '', 'anim': False, 'outline': False})
-        t = RepeatingTimer(5, self.drawtext(self.FELD_LOOP[count]))
+        t = RepeatingTimer(5, self.drawtext(random.choice(self.FELD_LOOP)))
         t.start()
 
         @sio.on('news')
