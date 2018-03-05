@@ -7,6 +7,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/..'))
 from rgbmatrix import graphics, RGBMatrixOptions, RGBMatrix
 from libs.blacklist import *
 
+import math
 import argparse
 import time
 import requests
