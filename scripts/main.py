@@ -263,9 +263,11 @@ class Feld():
         spaces = len(string) * spacing
         return sum([font.CharacterWidth(ord(c)) for c in string]) + spaces
 
-    def drawtext(self, word = random.choice(self.FELD_LOOP), opt = {}):
+    def drawtext(self, word = '', opt = {}):
         self.prev = self.word
         self.word = word
+        if word == '':
+            word = random.choice(self.FELD_LOOP)
         op = {
             'ml': self.MARGIN_LEFT,
             'mt': self.MARGIN_TOP,
