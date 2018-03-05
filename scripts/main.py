@@ -274,7 +274,7 @@ class Feld():
             'ml': self.MARGIN_LEFT,
             'mt': self.MARGIN_TOP,
             'dot': True,
-            'anim': True,
+            'anim': False,
             'outline': True,
             'color': self.MAIN_COLOR,
             'prefix': self.PREFIX,
@@ -331,13 +331,13 @@ class Feld():
     def mode_single_word(self):
         print "[*] MODE: Single word"
         while True:
-            self.drawtext(self.args.word[0], {'anim': False})
+            self.drawtext(self.args.word[0])
             time.sleep(2)
 
     def mode_loader(self):
         print "[*] MODE: Loader"
         while True:
-            self.drawtext()
+            self.drawtext('', {'anim': True})
             self.count = (1 + self.count) % len(self.FELD_LOOP)
             time.sleep(2)
 
@@ -355,7 +355,7 @@ class Feld():
             sio.emit('reply', "received: %s" % data)
             if not isblacklisted(data):
                 time.sleep(0.5)
-                self.drawtext(data)
+                self.drawtext(data, {'anim': True})
             else:
                 print "received banned word: %s from %s" % (data, sid)
 
