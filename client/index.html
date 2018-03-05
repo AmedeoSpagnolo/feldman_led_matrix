@@ -37,7 +37,12 @@
         "host": "192.168.50.181"
       }
 
-      var url  = 'ws://' + wan["host"] + ':' + wan["port"] + '/'
+      var bf = {
+        "port": 12345,
+        "host": "90.92.199.158"
+      }
+
+      var url  = 'ws://' + bf["host"] + ':' + bf["port"] + '/'
 
       var socket = io(url)
 
