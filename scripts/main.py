@@ -286,8 +286,8 @@ class Feld():
         while count > 0:
             self.offscreen_canvas.Clear()
 
-            anim_y_shift = int(float(self.YSHIFT) / op['anim_time'] * count)
-            anim_x_shift = int(float(delta_words) / op['anim_time'] * (count - 1))
+            anim_y_shift = int(math.pow(float(self.YSHIFT),-1) / math.pow(op['anim_time'],-1) * count)
+            anim_x_shift = int(math.pow(float(delta_words),-1) / math.pow(op['anim_time'],-1) * (count - 1))
 
             baseline = op['mt'] # y
             X0 = op['ml'] # prefix x value
