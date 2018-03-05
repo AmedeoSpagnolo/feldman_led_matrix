@@ -269,7 +269,6 @@ class Feld():
         self.word = word
         if word == '':
             word = self.FELD_LOOP[self.count]
-            self.count = (1 + self.count) % len(self.FELD_LOOP)
         print "data: %s" % (word)
         op = {
             'ml': self.MARGIN_LEFT,
@@ -339,6 +338,7 @@ class Feld():
         print "[*] MODE: Loader"
         while True:
             self.drawtext()
+            self.count = (1 + self.count) % len(self.FELD_LOOP)
             time.sleep(2)
 
     def mode_socket(self):
