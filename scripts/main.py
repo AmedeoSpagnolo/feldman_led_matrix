@@ -6,6 +6,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/..'))
 
 from rgbmatrix import graphics, RGBMatrixOptions, RGBMatrix
 from libs.blacklist import *
+from libs.timer import *
 
 import math
 import argparse
@@ -344,9 +345,13 @@ class Feld():
         sio = socketio.Server()
         app = Flask(__name__)
         self.drawtext("", {'suffix': '', 'anim': False, 'outline': False})
+        t = RepeatingTimer(5, self.drawtext(self.FELD_LOOP[count]))
+        t.start()
 
         @sio.on('news')
         def message(sid, data):
+            t.cancel()
+            t.start()
             print "data: %s" % data
             sio.emit('reply', "received: %s" % data)
             if not isblacklisted(data):
