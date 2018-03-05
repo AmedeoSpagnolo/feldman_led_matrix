@@ -148,6 +148,20 @@ class Feld():
             help="set margin top",
             type=int)
         self.parser.add_argument(
+            '--space_after_prefix',
+            nargs=1,
+            default=False,
+            required=False,
+            help="set space after prefix",
+            type=int)
+        self.parser.add_argument(
+            '--space_before_suffix',
+            nargs=1,
+            default=False,
+            required=False,
+            help="set space after prefix",
+            type=int)
+        self.parser.add_argument(
             '--animation_time',
             nargs=1,
             default=False,
@@ -225,6 +239,8 @@ class Feld():
         self.FONT_MAIN.LoadFont("libs/myfont/weights/font_" + str(fontsize_book) + "_book.bdf")
         self.FONT_BOLD = graphics.Font()
         self.FONT_BOLD.LoadFont("libs/myfont/weights/font_" + str(fontsize_bold) + "_bold.bdf")
+        self.SPACE_AFTER_PREFIX = arg.space_after_prefix[0] if arg.space_after_prefix else 0
+        self.SPACE_BEFORE_SUFFIX = arg.space_before_suffix[0] if arg.space_before_suffix else 0
         if arg.led_gpio_mapping != None:
           options.hardware_mapping = arg.led_gpio_mapping
         options.chain_length = arg.led_chain
@@ -241,7 +257,7 @@ class Feld():
           options.disable_hardware_pulsing = True
         return RGBMatrix(options = options)
 
-    def ll(self, string, font, spacing = 2):
+    def ll(self, string, font, spacing = 3):
         spaces = len(string) * spacing
         return sum([font.CharacterWidth(ord(c)) for c in string]) + spaces
 
@@ -275,8 +291,8 @@ class Feld():
 
             baseline = op['mt'] # y
             X0 = op['ml'] # prefix x value
-            X1 = op['ml'] + prefix_length # word x value
-            X2 = X1 + self.ll(word, op['font_book']) # dot x value
+            X1 = op['ml'] + prefix_length + self.SPACE_AFTER_PREFIX # word x value
+            X2 = X1 + self.ll(word, op['font_book']) + self.SPACE_BEFORE_SUFFIX # dot x value
 
             # [-- DRAW --]: prefix
             if op['prefix']:
