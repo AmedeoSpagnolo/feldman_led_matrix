@@ -263,7 +263,7 @@ class Feld():
         spaces = len(string) * spacing
         return sum([font.CharacterWidth(ord(c)) for c in string]) + spaces
 
-    def drawtext(self, word, opt = {}):
+    def drawtext(self, word = random.choice(self.FELD_LOOP), opt = {}):
         self.prev = self.word
         self.word = word
         op = {
@@ -345,7 +345,7 @@ class Feld():
         sio = socketio.Server()
         app = Flask(__name__)
         self.drawtext("", {'suffix': '', 'anim': False, 'outline': False})
-        t = RepeatingTimer(5, self.drawtext(random.choice(self.FELD_LOOP)))
+        t = RepeatingTimer(5, self.drawtext)
         t.start()
 
         @sio.on('news')
