@@ -199,6 +199,7 @@ class Feld():
             help="font bold height in pixel",
             type=int)
         self.args = self.parser.parse_args()
+        self.count = 0
 
         self.canvas = self.canvas_init(self.args)
         self.offscreen_canvas = self.canvas.CreateFrameCanvas()
@@ -267,7 +268,9 @@ class Feld():
         self.prev = self.word
         self.word = word
         if word == '':
-            word = random.choice(self.FELD_LOOP)
+            word = self.FELD_LOOP[self.count]
+            self.count = (1 + self.count) % len(self.FELD_LOOP)
+        print "data: %s" % (word)
         op = {
             'ml': self.MARGIN_LEFT,
             'mt': self.MARGIN_TOP,
@@ -328,25 +331,20 @@ class Feld():
 
     def mode_single_word(self):
         print "[*] MODE: Single word"
-        print "data: %s" % (self.args.word[0])
         while True:
             self.drawtext(self.args.word[0], {'anim': False})
             time.sleep(2)
 
     def mode_loader(self):
         print "[*] MODE: Loader"
-        count = 0
         while True:
-            print "data: %s" % (self.FELD_LOOP[count])
-            self.drawtext(self.FELD_LOOP[count])
-            count = (1 + count) % len(self.FELD_LOOP)
+            self.drawtext()
             time.sleep(2)
 
     def mode_socket(self):
         print "[*] MODE: Socket"
         sio = socketio.Server()
         app = Flask(__name__)
-        self.drawtext("", {'suffix': '', 'anim': False, 'outline': False})
         t = RepeatingTimer(5, self.drawtext)
         t.start()
 
@@ -354,7 +352,6 @@ class Feld():
         def message(sid, data):
             t.cancel()
             t.start()
-            print "data: %s" % data
             sio.emit('reply', "received: %s" % data)
             if not isblacklisted(data):
                 time.sleep(0.5)
@@ -370,7 +367,6 @@ class Feld():
 
     def mode_test_font_bold(self):
         print "[*] MODE: Test Font Bold"
-        print "data: %s" % (self.args.test_font_bold[0])
         while True:
             self.drawtext(self.args.test_font_bold[0], {
                 'prefix': '', 'suffix': '',
@@ -380,7 +376,6 @@ class Feld():
 
     def mode_test_font_book(self):
         print "[*] MODE: Test Font Book"
-        print "data: %s" % (self.args.test_font_book[0])
         while True:
             self.drawtext(self.args.test_font_book[0], {
                 'prefix': '', 'suffix': '',
