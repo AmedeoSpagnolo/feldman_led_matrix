@@ -345,7 +345,7 @@ class Feld():
         print "[*] MODE: Socket"
         sio = socketio.Server()
         app = Flask(__name__)
-        t = RepeatingTimer(5, self.drawtext)
+        t = RepeatingTimer(7, self.drawtext)
         t.start()
 
         @sio.on('news')
