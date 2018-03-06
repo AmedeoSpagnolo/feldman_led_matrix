@@ -274,7 +274,7 @@ class Feld():
             'ml': self.MARGIN_LEFT,
             'mt': self.MARGIN_TOP,
             'dot': True,
-            'anim': False,
+            'anim': (self.prev != self.word),
             'outline': True,
             'color': self.MAIN_COLOR,
             'prefix': self.PREFIX,
@@ -287,7 +287,6 @@ class Feld():
         delta_words = self.ll(self.word, op['font_book']) - self.ll(self.prev, op['font_book'])
         prefix_length = self.ll(op['prefix'], op['font_bold'], 1) if op['prefix'] else 0
         word_length = self.ll(word, op['font_book'], 1)
-
         count = op['anim_time'] if op['anim'] else 1
         while count > 0:
             self.offscreen_canvas.Clear()
