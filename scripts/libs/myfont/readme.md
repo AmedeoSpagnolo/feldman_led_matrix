@@ -2,6 +2,12 @@
 
     otf2bdf -o converted_16.bdf -p 16 CircularStd-Book.otf
 
+## check current letter
+
+    python correction_info_book.py M
+    python correction_info_bold.py M
+
+
 ## explanation
 
     STARTCHAR 0046

@@ -25,8 +25,7 @@ def multilinebin2hex(str):
 def char2ord(string):
     return [ord(i) for i in list(string)]
 
-text = read_text("weights/font_18_bold.bdf")
-
+text = read_text("weights/font_18_book.bdf")
 text = re.sub(r'\n', '{{}}', text)
 text = re.sub(r'ENDCHAR{{}}', 'ENDCHAR\n', text)
 # matches = re.finditer(r'ENCODING\s(\d+)|BITMAP(.*)ENDCHAR', text, re.MULTILINE)

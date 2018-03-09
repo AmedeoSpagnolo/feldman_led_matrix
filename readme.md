@@ -209,7 +209,6 @@ https://raspberrypi.stackexchange.com/questions/6757/how-to-use-ssh-out-of-home-
 		adjustment letters
 		special chars broking words
 		underline slow
-		dots
 
 ## I
 
