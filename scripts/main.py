@@ -349,10 +349,10 @@ class Feld():
 
         @sio.on('news')
         def message(sid, data):
-            t.cancel()
-            t.start()
             sio.emit('reply', "received: %s" % data)
             if not isblacklisted(data):
+                t.cancel()
+                t.start()
                 time.sleep(0.5)
                 self.drawtext(data, {'anim': True})
             else:
