@@ -344,17 +344,16 @@ class Feld():
         print "[*] MODE: Socket"
         sio = socketio.Server()
         app = Flask(__name__)
-        t = RepeatingTimer(7, self.drawtext)
-        t.start()
+        self.TIME.start()
 
         @sio.on('news')
         def message(sid, data):
-            t.cancel()
-            t.start()
             sio.emit('reply', "received: %s" % data)
             if not isblacklisted(data):
-                time.sleep(0.5)
+                self.TIME.cancel()
                 self.drawtext(data, {'anim': True})
+                self.TIME.start()
+                time.sleep(0.5)
             else:
                 print "received banned word: %s from %s" % (data, sid)
 
@@ -384,6 +383,8 @@ class Feld():
     def run(self):
         print "[*] starting..."
         print "Press CTRL-C to stop"
+
+        self.TIME = RepeatingTimer(7, self.drawtext)
 
         # [*] MODE: Single Word
         if self.args.word:
