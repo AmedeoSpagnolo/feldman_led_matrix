@@ -63,6 +63,13 @@ def printall():
         except:
             pass
 
+def printallord():
+    for key, value in output.iteritems():
+        try:
+            print value["ord"]
+        except:
+            pass
+
 def printchar(c):
     key = char2ord(c)
     value = output["_"+c]
@@ -71,7 +78,4 @@ def printchar(c):
     print "\n".join(hex2bin(value["val"].splitlines()[1:]))
     print value["val"]
 
-try:
-    printchar(sys.argv[1])
-except:
-    print "missing argument CHAR"
+printallord()

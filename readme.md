@@ -212,4 +212,4 @@ https://raspberrypi.stackexchange.com/questions/6757/how-to-use-ssh-out-of-home-
 
 ## I
 
-feldmanstudio.ddns.net
+feldmanstudio.ddns.ne
